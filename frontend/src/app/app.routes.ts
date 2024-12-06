@@ -61,13 +61,13 @@ export const routes: Routes = [
             },
             {
               path: 'location',
-              component: ManageLocationsComponent,canActivate: [authAdminGuard],
+              component: ManageLocationsComponent,
               children:[
                 { path: '', component: LocationsComponent },
-                { path: 'stock-transfer', component: TransferStockComponent },
-                { path: 'stock-transfer-logs', component: StockTransferLogsComponent },
+                { path: 'stock-transfer', component: TransferStockComponent ,canActivate: [authAdminGuard]},
+                { path: 'stock-transfer-logs', component: StockTransferLogsComponent ,canActivate: [authAdminGuard]},
                 { path: ':locId', component: LocationDetailsComponent },
-                { path: ':locId/add-existing-item-location', component: AddExistingItemLocationComponent },
+                { path: ':locId/add-existing-item-location', component: AddExistingItemLocationComponent ,canActivate: [authAdminGuard]},
               ]
             },
             

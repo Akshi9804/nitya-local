@@ -6,7 +6,7 @@
                 <li><img src="../../../assets/images/icon2.png" width="300px"></li>
 
                 <li *ngIf="!this.isLoggedIn" (click)="showSignIn()"><button>Sign in</button></li>
-                <li *ngIf="this.isLoggedIn"><button>Sign Out</button></li>
+                <li *ngIf="this.isLoggedIn" (click)="signOut()"><button>Sign Out</button></li>
             </ul>
         </div>
 

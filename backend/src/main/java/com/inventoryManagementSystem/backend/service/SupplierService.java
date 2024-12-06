@@ -26,6 +26,8 @@ public class SupplierService {
         return Utility.getResponse(new StatusEntry(ResponseEnum.RETRIEVED_SUCCESSFULLY),data);
     }
 
+
+
     public CommonResponse<String> addSupplier(Supplier supplier) {
         String name = supplier.getName();
         boolean exists = supplierRepository.existsByName(name); // Custom repository method

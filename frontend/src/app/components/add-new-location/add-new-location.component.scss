@@ -1,0 +1,112 @@
+// General container for the form
+.dialog-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  // Style for the form fields
+  .field {
+    margin-bottom: 15px;
+  
+    label {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      display: block;
+      margin-bottom: 5px;
+      transition: color 0.3s ease;
+    }
+  
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+  
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+      }
+  
+      &.ng-touched.ng-dirty.ng-invalid {
+        border-color: #e74c3c; // Highlight in red on invalid input
+      }
+    }
+  
+    .validation {
+      margin-top: 5px;
+      color: #e74c3c;
+      font-size: 12px;
+      display: block;
+    }
+  
+    // Highlight the label when input is invalid
+    input.ng-touched.ng-dirty.ng-invalid ~ label {
+      color: #e74c3c;
+    }
+  }
+  
+  // Button styles
+  .submit-btn, .cancel-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  
+    &:hover {
+      transform: scale(1.05);
+    }
+  
+    &.submit-btn {
+      background-color: #007bff;
+      color: white;
+  
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+  
+      &:not(:disabled):hover {
+        background-color: #0056b3;
+      }
+    }
+  
+    &.cancel-btn {
+      background-color: #f44336;
+      color: white;
+  
+      &:hover {
+        background-color: #d32f2f;
+      }
+    }
+  }
+  
+  // Ensure dialog actions are aligned correctly
+  .mat-dialog-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  // Add some spacing for the whole dialog
+  mat-dialog-content {
+    padding: 20px;
+  }
+  
+  .mat-mdc-dialog-container .mdc-dialog__title {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+    text-align: center;
+  }
+  

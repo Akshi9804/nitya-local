@@ -20,11 +20,19 @@ export class HomeComponent implements OnInit{
 
   constructor(private authService:AuthService){}
   ngOnInit(){
-    this.isLoggedIn=this.authService.isLoggedIn();
+    this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
+      this.isLoggedIn = isAuthenticated;
+      console.log('Auth status updated:', this.isLoggedIn);
+    });
   }
   showSignIn() {
     this.signin.openOverlay();
     
   }
+
+  signOut(){
+    this.authService.logout();
+  }
+
 
 }

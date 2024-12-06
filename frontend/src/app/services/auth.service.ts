@@ -1,34 +1,91 @@
 import { Injectable } from '@angular/core';
-import { UserService } from './user.service';
+import { BehaviorSubject } from 'rxjs';
+import { User } from '../interfaces/user.interface';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private isAuthenticated = false;
-  private isAdmin = false;
+  private isAuthenticatedSubject: BehaviorSubject<boolean>;
+  isAuthenticated$ = new BehaviorSubject<boolean>(false).asObservable();
 
-  constructor(private userService:UserService){}
-  
-  login(): void { 
-      this.isAuthenticated = true;
-    if(this.userService.getUser().role==='admin')
-      this.isAdmin=true;
-    console.log(this.isAuthenticated,this.isAdmin)
+  private isAdminSubject: BehaviorSubject<boolean>;
+  isAdmin$ = new BehaviorSubject<boolean>(false).asObservable();
+
+  private userSubject: BehaviorSubject<User | null>;
+  user$ = new BehaviorSubject<User | null>(null).asObservable();
+
+  constructor(private router:Router) {
+    // Initialize state from sessionStorage
+    const isAuthenticated = this.checkLoginFromSession();
+    const isAdmin = this.checkAdminFromSession();
+    const user = JSON.parse(sessionStorage.getItem('user') || 'null');
+
+    // Initialize the BehaviorSubjects
+    this.isAuthenticatedSubject = new BehaviorSubject<boolean>(isAuthenticated);
+    this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
+    this.isAdminSubject = new BehaviorSubject<boolean>(isAdmin);
+    this.isAdmin$ = this.isAdminSubject.asObservable();
+
+    this.userSubject = new BehaviorSubject<User | null>(user);
+    this.user$ = this.userSubject.asObservable();
   }
 
-  // Mock logout method
+  private checkLoginFromSession(): boolean {
+    const userExists = !!sessionStorage.getItem('user');
+    console.log('Session check result:', userExists);
+    return userExists;
+  }
+
+  private checkAdminFromSession(): boolean {
+    const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
+    return userData?.role === 'admin';
+  }
+
+  setAdminStatus(isAdmin: boolean): void {
+    this.isAdminSubject.next(isAdmin);
+
+    const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
+    sessionStorage.setItem(
+      'user',
+      JSON.stringify({ ...userData, role: isAdmin ? 'admin' : 'staff' })
+    );
+  }
+
+  login(user: User): void {
+    const isAdmin = user.role === 'admin';
+
+    this.isAuthenticatedSubject.next(true);
+    this.isAdminSubject.next(isAdmin);
+    this.userSubject.next(user);
+
+    sessionStorage.setItem('isAuthenticated', 'true');
+    sessionStorage.setItem('isAdmin', JSON.stringify(isAdmin));
+    sessionStorage.setItem('user', JSON.stringify(user));
+  }
+
   logout(): void {
-    this.isAuthenticated = false;
-    this.isAdmin=false;
+    this.isAuthenticatedSubject.next(false);
+    this.isAdminSubject.next(false);
+    this.userSubject.next(null);
+
+    sessionStorage.clear();
+    this.router.navigate(['/']);
+
+  }
+
+  getUser(): User | null {
+    return this.userSubject.getValue();
   }
 
   isLoggedIn(): boolean {
-    return this.isAuthenticated;
+    return this.isAuthenticatedSubject.getValue();
   }
 
   isUserAdmin(): boolean {
-    return this.isAdmin;
+    return this.isAdminSubject.getValue();
   }
 }

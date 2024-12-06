@@ -1,1 +1,27 @@
-<p>Hello! {{user?.name}}</p>
+<div class="dashboard_pane">
+    <h1>Hello <span>{{user.name}}!</span></h1>
+    <div class="user">
+        <div class="data">
+            <h2>{{user.userId}}</h2>
+            <p>{{user.email}}</p>
+            <p>{{user.role}}</p>
+        </div>
+        <div class="btn-container">
+            <button (click)="signOut()">Sign Out</button>
+        </div>
+        
+        
+    </div>
+    <div class="reports">
+        <div class="chart-item bar_chart">
+            <canvas id="chart_1" height="350px" width="420px"></canvas>
+        </div>
+        <div class="chart-item">
+            <canvas id="chart_2"></canvas>
+        </div>
+        <div class="chart-item">
+            <canvas id="chart_3"></canvas>
+        </div>
+    </div>
+
+</div>

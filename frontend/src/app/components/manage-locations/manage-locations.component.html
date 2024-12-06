@@ -1,5 +1,5 @@
 <div class="manage-locations-panel">
-    <div class="functions">
+    <div class="functions" *ngIf="isAdmin">
         <a [class.active]="isActive('/task/location')" routerLink="/task/location">
             <div class="function">
                 <p>View Locations</p>
