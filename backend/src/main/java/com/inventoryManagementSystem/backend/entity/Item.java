@@ -29,6 +29,6 @@ public class Item {
     private int reorderLevel=0;
     private LocalDateTime lastUpdated;
     private List<String> availableLocations=new ArrayList<>();
-
+    private boolean notificationSent=false;
 
 }
