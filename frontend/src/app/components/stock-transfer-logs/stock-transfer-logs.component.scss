@@ -1,0 +1,59 @@
+.logs-panel{
+// General styling for the table container
+padding: 30px;
+.mat-elevation-z8 {
+    box-shadow: none !important; // Remove shadow
+    border: 1px solid #e0e0e0; // Light border for the table container
+    border-radius: 8px; // Rounded corners
+    background-color: #ffffff; // White background
+    overflow: hidden; // Prevent overflow
+  }
+  
+  // Styling for the table
+  table {
+    border-collapse: collapse; // Remove gaps between table cells
+  
+    th, td {
+      padding: 12px 16px; // Add padding to table cells
+      text-align: left; // Align text to the left
+      font-size: 14px; // Standard font size
+      font-weight: 400; // Normal font weight for cells
+      color: #333; // Subtle text color
+    }
+  
+    th {
+      background-color: #f5f5f5; // Light grey background for headers
+      font-weight: 500; // Slightly bold text for headers
+      text-transform: uppercase; // Capitalized text for headers
+      color: #555; // Slightly darker text color for headers
+    }
+  
+    tr {
+      border-bottom: 1px solid #e0e0e0; // Greyish break line between rows
+  
+      &:hover {
+        background-color: #f9f9f9; // Subtle hover effect
+      }
+    }
+  }
+  
+  // Paginator styling
+  mat-paginator {
+    margin-top: 16px; // Add spacing above paginator
+  }
+
+
+  h1 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: rgb(53,94,59);
+    /* Matching blue header color */
+  }
+}
+
+
+  
+  
+  

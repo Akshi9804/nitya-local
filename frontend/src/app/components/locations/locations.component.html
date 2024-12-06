@@ -1,0 +1,17 @@
+<div class="locations-panel">
+  
+  
+  <div class="locations">
+    <h1>Locations</h1>
+    <button (click)="openLocationDialog()">Add Location</button>
+    <div class="card" *ngFor="let location of locations">
+      <div class="content">
+        <p>{{location.name}}</p>
+        <a [routerLink]="['/task/location', location.locId]"><i class="material-icons" style="color:grey">arrow_forward_ios</i></a>
+      </div>
+      
+    </div>
+  </div>
+    
+      
+</div>

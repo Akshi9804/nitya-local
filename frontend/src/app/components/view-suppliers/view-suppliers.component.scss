@@ -1,0 +1,79 @@
+// General styling for the table container
+.mat-elevation-z8 {
+  box-shadow: none !important; // Remove shadow
+  border: 1px solid #e0e0e0; // Light border for the table container
+  border-radius: 8px; // Rounded corners
+  background-color: #ffffff; // White background
+  overflow: hidden; // Prevent overflow
+}
+
+// Styling for the table
+table {
+  border-collapse: collapse; // Remove gaps between table cells
+
+  th, td {
+    padding: 12px 16px; // Add padding to table cells
+    text-align: left; // Align text to the left
+    font-size: 14px; // Standard font size
+    font-weight: 400; // Normal font weight for cells
+    color: #333; // Subtle text color
+  }
+
+  th {
+    background-color: #f5f5f5; // Light grey background for headers
+    font-weight: 500; // Slightly bold text for headers
+    text-transform: uppercase; // Capitalized text for headers
+    color: #555; // Slightly darker text color for headers
+  }
+
+  tr {
+    border-bottom: 1px solid #e0e0e0; // Greyish break line between rows
+
+    &:hover {
+      background-color: #f9f9f9; // Subtle hover effect
+    }
+  }
+}
+
+// Paginator styling
+mat-paginator {
+  margin-top: 16px; // Add spacing above paginator
+}
+
+// Button styling
+.add-supplier {
+  background-color: rgb(53,94,59); // Blue background
+  color: white; // White text
+  border: none; // Remove border
+  border-radius: 4px; // Slightly rounded corners
+  padding: 13px 16px; // Button padding
+  font-size: 14px; // Font size
+  font-weight: 500; // Slightly bold font
+  text-transform: uppercase; // Capitalized text
+  cursor: pointer; // Pointer cursor on hover
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; // Smooth transitions
+  margin-left: auto;  // Push button to the right
+  display: block;
+  margin-bottom: 20px;
+
+
+  &:hover {
+    background-color: rgb(53,94,59,0.7); // Darker blue on hover
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Subtle shadow on hover
+  }
+
+  &:focus {
+    outline: none; // Remove default outline
+    box-shadow: 0 0 0 2px rgb(200, 200, 200); // Focus ring
+  }
+}
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: rgb(53,94,59);
+  /* Matching blue header color */
+}
+
+

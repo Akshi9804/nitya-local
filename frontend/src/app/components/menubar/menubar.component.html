@@ -1,0 +1,27 @@
+<div class="menubar">
+    <a routerLink="/"><img class="logo" src="../../../assets/images/icon2.png" width="200px"/></a>
+    <ul>
+      <li [class.active]="isActive('/task')">
+        <a routerLink="/task">Dashboard</a>
+      </li>
+      <li *ngIf="checkRole()" [class.active]="isActive('/task/suppliers')">
+        <a routerLink="/task/suppliers">Manage Suppliers</a>
+      </li>
+      <li [class.active]="isActive('/task/inventory')">
+        <a routerLink="/task/inventory">Inventory</a>
+      </li>
+      <li [class.active]="isActive('/task/orders')">
+        <a routerLink="/task/orders">Orders</a>
+      </li>
+      <li [class.active]="isActive('/task/purchase-order')" *ngIf="checkRole()">
+        <a routerLink="/task/purchase-order">Purchase Orders</a>
+      </li>
+      <li [class.active]="isActive('/task/logs')" *ngIf="checkRole()">
+        <a routerLink="/task/logs">Logs</a>
+      </li>
+      <li [class.active]="isActive('/task/location')" *ngIf="checkRole()">
+        <a routerLink="/task/location">Locations</a>
+      </li>
+    </ul>
+  </div>
+  

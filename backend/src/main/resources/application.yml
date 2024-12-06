@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: backend
+
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/inventoryManagementSystem
+
+
+server:
+  port: 8090
+

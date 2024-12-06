@@ -1,0 +1,86 @@
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px; /* Space between cards */
+    padding: 20px;
+  }
+  
+  .pending-card {
+    flex: 1 1 calc(50% - 16px); /* Ensure 2 cards fit per row */
+    box-sizing: border-box;
+    max-width: 400px; /* Optional: To limit the card width */
+    background-color: #f1f1f1;
+    padding: 20px;
+  }
+  
+  .mat-elevation-z8 {
+    box-shadow: none !important;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    overflow: hidden;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 400;
+      color: #333;
+    }
+  
+    th {
+      background-color: #f5f5f5;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: #555;
+    }
+  
+    tr {
+      border-bottom: 1px solid #e0e0e0;
+  
+      &:hover {
+        background-color: #f9f9f9;
+      }
+    }
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: space-between; /* Space out the buttons */
+    padding: 8px 16px;
+  }
+  
+  button {
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+    
+  }
+  
+  button:hover {
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2); /* Add hover effect */
+  }
+  .edit-button{
+    background-color: rgb(213, 213, 35);
+  }
+  .approve-button{
+    background-color: green;
+    color: white !important;
+  }
+  .decline-button{
+    background-color: rgb(205, 0, 0);
+    color: white !important;
+  }
+
+ 
+  
+  
+  
+  

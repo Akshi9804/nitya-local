@@ -1,0 +1,123 @@
+.content{
+    max-width: 80%;
+    margin: auto;
+}
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  
+    label {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+  
+    select, input[type="number"] {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+  
+      &:focus {
+        outline: none;
+        border-color: rgb(53,94,59);
+        background-color: #fff;
+      }
+    }
+  
+    .validation {
+      font-size: 0.85rem;
+      color: #d9534f;
+      margin-top: 0.3rem;
+    }
+  }
+  
+  button {
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: rgb(53,94,59);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  
+    &:hover:not(:disabled) {
+      background-color: rgb(53,94,59,0.7);
+    }
+  }
+
+  .mat-elevation-z8 {
+    box-shadow: none !important;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    overflow: hidden;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 400;
+      color: #333;
+    }
+  
+    th {
+      background-color: #f5f5f5;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: #555;
+    }
+  
+    tr {
+      border-bottom: 1px solid #e0e0e0;
+  
+      &:hover {
+        background-color: #f9f9f9;
+      }
+    }
+  }
+  
+  mat-paginator {
+    margin-top: 16px;
+  }
+  
+  button {
+    background-color: rgb(53,94,59);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 13px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-left: auto;
+    display: block;
+    margin-bottom: 20px;
+  
+    &:hover {
+      background-color: rgb(53,94,59);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(200,200,200);
+    }
+  }
+  
+  

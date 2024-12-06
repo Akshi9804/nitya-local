@@ -1,0 +1,64 @@
+<div class="supplier-panel"  style="width: 80%;margin: auto;">
+  
+  <button class="add-supplier" (click)="navigateToAddSuppliers()">Add Supplier</button>
+  <h1>Suppliers</h1>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+        <!-- Supplier ID column -->
+      <ng-container matColumnDef="supplierId">
+        <th mat-header-cell *matHeaderCellDef> Supplier ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.supplierId}} </td>
+      </ng-container>
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+  
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+
+      <!-- Mobile Number Column -->
+      <ng-container matColumnDef="mobile">
+        <th mat-header-cell *matHeaderCellDef> Mobile Number </th>
+        <td mat-cell *matCellDef="let element"> {{element.mobile}} </td>
+      </ng-container>
+  
+      <!-- Address Column -->
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef> Address </th>
+        <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+      </ng-container>
+
+      <!-- Delivery in days Column -->
+      <ng-container matColumnDef="deliveryInDays">
+        <th mat-header-cell *matHeaderCellDef> Delivery in Days </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.deliveryInDays}} </td>
+      </ng-container>
+
+      <!--View Supplier Column -->
+      <ng-container matColumnDef="viewSupplier">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element"> <a [routerLink]="['/task/suppliers', element.supplierId]"><mat-icon>open_in_new</mat-icon></a> </td>
+      </ng-container>
+
+      <!-- Delivery in days Column -->
+      <ng-container matColumnDef="deleteSupplier">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element"> <button mat-icon-button (click)="openConfirmationDialogForDelete(element.supplierId)"><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon></button> </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </div>
+</div>
