@@ -39,4 +39,8 @@ export class SupplierService {
       return this.http.put<ApiResponse<String>>(`${this.baseUrl}/add-existing-item/${supplierId}`,{itemId:itemId,supplierId:supplierId});
   }
 
+  deleteExistingItem(itemId:String, supplierId : String):Observable<ApiResponse<String>>{
+    return this.http.put<ApiResponse<String>>(`${this.baseUrl}/delete-item/${supplierId}`,{itemId:itemId,supplierId:supplierId});
+}
+
 }

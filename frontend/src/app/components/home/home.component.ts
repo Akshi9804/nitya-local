@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SigninComponent } from '../signin/signin.component';
 import { AuthService } from '../../services/auth.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 
 
@@ -18,7 +19,7 @@ export class HomeComponent implements OnInit{
 
   @ViewChild(SigninComponent) signin!: SigninComponent;
 
-  constructor(private authService:AuthService){}
+  constructor(private authService:AuthService,private snackbar:SnackbarService){}
   ngOnInit(){
     this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
       this.isLoggedIn = isAuthenticated;
@@ -32,6 +33,7 @@ export class HomeComponent implements OnInit{
 
   signOut(){
     this.authService.logout();
+    this.snackbar.showSnackbar("Logged out successfully");
   }
 
 

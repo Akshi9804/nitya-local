@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SupplierService } from '../../services/supplier.service';
 import { Router } from '@angular/router';
+import { SnackbarService } from '../../services/snackbar.service';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class AddSupplierComponent {
   disableAddSupplier: boolean = false;
 
   addSupplierForm!: FormGroup;
-  constructor(private formBuilder: FormBuilder,private supplierService: SupplierService, private router: Router) {
+  constructor(private formBuilder: FormBuilder,private supplierService: SupplierService, private router: Router,private snackbarService:SnackbarService) {
     this.constructForm();
   }
   constructForm() {
@@ -40,12 +41,16 @@ export class AddSupplierComponent {
 
 
     this.supplierService.addSupplier(supplierData).subscribe({
-      next: (response) => {
-        console.log('Supplier added successfully:', response);
+      next: (res) => {
+        console.log('Supplier added successfully:', res);
+        const message = typeof res.data === 'string' ? res.data : JSON.stringify(res.data);
+            console.log(message);
+            this.snackbarService.showSnackbar(message);
         this.router.navigate(['/task/suppliers']); 
       },
       error: (error) => {
         console.error('Error adding supplier:', error);
+        this.snackbarService.showSnackbar('Error adding supplier');
         this.disableAddSupplier = false; 
       },
     });

@@ -126,6 +126,35 @@ public class SupplierService {
 
     }
 
+    public CommonResponse<String> deleteItemForSupplier(String supplierId, String itemId) {
+        // Fetch the supplier by supplierId
+        Optional<Supplier> dbSupplier = supplierRepository.findBySupplierId(supplierId);
+
+        if (dbSupplier.isPresent()) {
+            Supplier supplier = dbSupplier.get();
+
+            // Check if the item is in the supplier's productsProvided list
+            boolean exists = supplier.getProductsProvided().remove(itemId);
+
+            if (exists) {
+                // Save the updated supplier
+                supplierRepository.save(supplier);
+
+                // Return success response
+                String data = "Item " + itemId + " removed from " + supplier.getName() + " successfully";
+                return Utility.getResponse(new StatusEntry(ResponseEnum.UPDATED_SUCCESSFULLY), data);
+            } else {
+                // If the item is not found in the supplier's list
+                String data = "Item " + itemId + " not found in the list of products provided by " + supplier.getName();
+                return Utility.getResponse(new StatusEntry(ResponseEnum.NO_DATA), data);
+            }
+        } else {
+            // If the supplier is not found
+            String data = "Supplier with ID " + supplierId + " not found";
+            return Utility.getResponse(new StatusEntry(ResponseEnum.NO_DATA), data);
+        }
+    }
+
 
 
 

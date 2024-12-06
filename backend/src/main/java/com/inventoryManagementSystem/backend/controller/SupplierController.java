@@ -49,4 +49,8 @@ public class SupplierController {
     public ResponseEntity<CommonResponse<String>> addExistingItem(@RequestBody Map<String,String> inputMap) {
         return new ResponseEntity<>(supplierService.addExistingItem(inputMap.get("supplierId"),inputMap.get("itemId")),HttpStatus.OK);
     }
+    @PutMapping("/delete-item/{id}")
+    public ResponseEntity<CommonResponse<String>> deleteItemFromSupplier(@RequestBody Map<String,String> inputMap) {
+        return new ResponseEntity<>(supplierService.deleteItemForSupplier(inputMap.get("supplierId"),inputMap.get("itemId")), HttpStatus.OK);
+    }
 }

@@ -8,6 +8,7 @@ import { Order } from '../../interfaces/order.interface';
 import { OrderService } from '../../services/order.service';
 import { Chart } from 'chart.js/auto';
 import { CommonModule } from '@angular/common';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,7 +30,8 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private itemService: ItemService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private snackbar:SnackbarService
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +45,7 @@ export class DashboardComponent implements OnInit {
 
   signOut(){
     this.authService.logout();
+    this.snackbar.showSnackbar("Logged out successfully");
   }
 
   getItems() {

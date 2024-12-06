@@ -3,6 +3,7 @@ import {  MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LocationService } from '../../services/location.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-add-new-location',
@@ -20,6 +21,7 @@ export class AddNewLocationComponent {
     public dialogRef: MatDialogRef<AddNewLocationComponent>,
     private locationService:LocationService,
     private formBuilder:FormBuilder, 
+    private snackbarService:SnackbarService
   ) {
     this.constructForm();
   }
@@ -40,12 +42,16 @@ export class AddNewLocationComponent {
     if (this.addLocationForm.valid) {
       const newLocation = this.addLocationForm.getRawValue();
       this.locationService.addLocation(newLocation).subscribe({
-        next:(response) => {
-          console.log('Item added successfully:', response);
-          this.dialogRef.close(response.data); 
+        next:(res) => {
+          console.log('Item added successfully:', res);
+          const message = typeof res.data === 'string' ? res.data : JSON.stringify(res.data);
+            console.log(message);
+            this.snackbarService.showSnackbar(message);
+          this.dialogRef.close(res.data); 
         },
         error: (error) => {
           console.error('Error adding item:', error);
+          this.snackbarService.showSnackbar('Error adding ');
         }
     });
     }

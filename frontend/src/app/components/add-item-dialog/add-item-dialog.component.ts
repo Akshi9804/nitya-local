@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { Item } from '../../interfaces/item.interface';
 import { ItemService } from '../../services/item.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SnackbarService } from '../../services/snackbar.service';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class AddItemDialogComponent {
     public dialogRef: MatDialogRef<AddItemDialogComponent>,
     private itemService:ItemService,
     private formBuilder:FormBuilder,
+    private snackbarService:SnackbarService,
     @Inject(MAT_DIALOG_DATA) public data: { supplierId: string } 
   ) {
     this.constructForm();
@@ -45,6 +47,7 @@ export class AddItemDialogComponent {
       this.itemService.addItemFromSupplier(newItem,this.data.supplierId).subscribe(
         (response) => {
           console.log('Item added successfully:', response);
+          this.snackbarService.showSnackbar("Item added successfully","close",3000)
           this.dialogRef.close(response.data); // Pass the new item back to the parent
         },
         (error) => {

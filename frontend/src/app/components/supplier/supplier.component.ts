@@ -11,6 +11,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { ConfirmationDialogComponent } from '../common-elements/confirmation-dialog/confirmation-dialog.component';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-supplier',
@@ -27,7 +28,7 @@ export class SupplierComponent implements OnInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
 
-  constructor(private route: ActivatedRoute, private supplierService: SupplierService, private itemService:ItemService,private dialog: MatDialog,private router:Router) {}
+  constructor(private route: ActivatedRoute, private supplierService: SupplierService, private itemService:ItemService,private dialog: MatDialog,private router:Router,private snackbarService:SnackbarService) {}
 
   ngOnInit() {
     const supplierId = this.route.snapshot.params['supplierId'];
@@ -55,17 +56,20 @@ export class SupplierComponent implements OnInit{
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Dialog result (type):', typeof result, 'Value:', result);
       if (result == "true") { // Explicitly check for `true`
-        this.deleteItem(itemId);
+        this.deleteExistingItem(itemId);
       } else {
         console.log('Deletion canceled by user.');
       }
     });
   }
 
-  deleteItem(itemId:string){
-    this.itemService.deleteItem(itemId).subscribe({
-      next: (response) => {
-        console.log(response.data);
+  deleteExistingItem(itemId:string){
+    this.supplierService.deleteExistingItem(itemId,this.supplier.supplierId).subscribe({
+      next: (res) => {
+        console.log(res.data);
+        const message = typeof res.data === 'string' ? res.data : JSON.stringify(res.data);
+            console.log(message);
+            this.snackbarService.showSnackbar(message);
         this.fetchData(this.supplier.supplierId);
       },
       error: (error) => {

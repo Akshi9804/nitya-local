@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { User } from '../../interfaces/user.interface';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-signin',
@@ -23,7 +24,7 @@ export class SigninComponent {
 
   userLoginDetails!: FormGroup;
   userRegistrationDetails!: FormGroup;
-  constructor(private formBuilder: FormBuilder,private userService:UserService,private router:Router,private authService:AuthService) {
+  constructor(private formBuilder: FormBuilder,private userService:UserService,private router:Router,private authService:AuthService,private snackbarService:SnackbarService) {
     this.constructForm();
   }
 
@@ -68,13 +69,16 @@ export class SigninComponent {
           
           if(res.statusEntry.statusCode!==1001)
           {
-            console.log(res.data);
+            const message = typeof res.data === 'string' ? res.data : JSON.stringify(res.data);
+            console.log(message);
+            this.snackbarService.showSnackbar(message);
           }
           else{
             const user:User= Array.isArray(res.data) ? res.data[0]:res.data;
             this.authService.login(user);
             console.log(user);
             this.router.navigate(['/task']);  
+            this.snackbarService.showSnackbar("Logged in successfully");
             
           }
           
@@ -93,10 +97,13 @@ export class SigninComponent {
       this.userService.signupUser(signUpDetails).subscribe({
         next:(res)=>{
           if(res.statusEntry.statusCode!==1003){
-            console.log(res.data);
+            const message = typeof res.data === 'string' ? res.data : JSON.stringify(res.data);
+            console.log(message);
+            this.snackbarService.showSnackbar(message);
           }
           else{
             this.toggleLoginSignup();
+            this.snackbarService.showSnackbar("Registered successfully");
           }
           
         },

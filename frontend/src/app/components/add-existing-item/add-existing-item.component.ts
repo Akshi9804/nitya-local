@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { SupplierService } from '../../services/supplier.service';
 import {MatIconModule} from '@angular/material/icon'
 import {MatButtonModule} from '@angular/material/button';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-add-existing-item',
@@ -23,7 +24,7 @@ export class AddExistingItemComponent implements OnInit, AfterViewInit {
   items: Item[] = [];
   supplierId!: String;
   dataSource = new MatTableDataSource<Item>();
-  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private itemService: ItemService, private supplierService: SupplierService) { }
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private itemService: ItemService, private supplierService: SupplierService,private snackbarService:SnackbarService) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngOnInit(): void {
@@ -51,7 +52,14 @@ export class AddExistingItemComponent implements OnInit, AfterViewInit {
     this.supplierService.addExistingItem(itemId, this.supplierId).subscribe({
       next: (res) => {
         console.log(res);
+        const message = typeof res.data === 'string' ? res.data : JSON.stringify(res.data);
+            console.log(message);
+            this.snackbarService.showSnackbar(message);
         this.router.navigate(['/task/suppliers',this.supplierId])
+      },
+      error:(err)=>{
+        console.log("Error submitting data: ",err);
+        this.snackbarService.showSnackbar("Error adding item");
       }
     })
   }
