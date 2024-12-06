@@ -1,7 +1,7 @@
 <div class="location-details-panel">
   <div class="location-details">
-    <h1>{{location.name}}</h1>
-    <p>{{location.address}}</p>
+    <h1>{{location?.name}}</h1>
+    <p>{{location?.address}}</p>
   </div>
   <button (click)="openAddExistingItem()" *ngIf="isAdmin">Add New Item</button>
   <h3>Items in Stock</h3>

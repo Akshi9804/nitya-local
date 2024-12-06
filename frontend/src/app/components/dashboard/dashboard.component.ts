@@ -9,6 +9,8 @@ import { OrderService } from '../../services/order.service';
 import { Chart } from 'chart.js/auto';
 import { CommonModule } from '@angular/common';
 import { SnackbarService } from '../../services/snackbar.service';
+import { Review } from '../../interfaces/review.interface';
+import { ReviewService } from '../../services/review.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,7 +23,8 @@ export class DashboardComponent implements OnInit {
   user: User | null = null;
   items: Item[] = [];
   orders: Order[] = [];
-  barGraphData:any;
+  reviews: Review[] = [];
+  barGraphData: any;
 
   public chart_1: any;
   public chart_2: any;
@@ -31,7 +34,8 @@ export class DashboardComponent implements OnInit {
     private userService: UserService,
     private itemService: ItemService,
     private orderService: OrderService,
-    private snackbar:SnackbarService
+    private snackbar:SnackbarService,
+    private reviewService: ReviewService
   ) { }
 
   ngOnInit(): void {
@@ -39,11 +43,12 @@ export class DashboardComponent implements OnInit {
     this.getItems();
     console.log(this.items);
     this.getOrders();
-    
+    this.getReviews();
+
     console.log(this.barGraphData);
   }
 
-  signOut(){
+  signOut() {
     this.authService.logout();
     this.snackbar.showSnackbar("Logged out successfully");
   }
@@ -68,14 +73,14 @@ export class DashboardComponent implements OnInit {
 
   getCategoriesWithCounts(): { [key: string]: number } {
     const categoryCounts: { [key: string]: number } = {};
-  
+
     // Count items per category
     this.items.forEach((item) => {
       if (item.category) {
         categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
       }
     });
-  
+
     return categoryCounts;
   }
 
@@ -92,9 +97,9 @@ export class DashboardComponent implements OnInit {
   }
 
   prepareItemsChart() {
-    const labels = Object.keys(this.barGraphData); 
-  const data = Object.values(this.barGraphData);
-  console.log(labels,data)
+    const labels = Object.keys(this.barGraphData);
+    const data = Object.values(this.barGraphData);
+    console.log(labels, data)
     this.chart_1 = new Chart('chart_1', {
       type: 'bar',
       data: {
@@ -106,7 +111,7 @@ export class DashboardComponent implements OnInit {
             backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
             borderColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
             borderWidth: 1,
-            barThickness: 50,
+            barThickness: 30,
             maxBarThickness: 50,
           },
         ],
@@ -172,7 +177,7 @@ export class DashboardComponent implements OnInit {
     });
 
     this.chart_2 = new Chart('chart_2', {
-      type: 'pie',
+      type: 'doughnut',
       data: {
         labels: ['Incoming Orders', 'Outgoing Orders'],
         datasets: [
@@ -185,7 +190,7 @@ export class DashboardComponent implements OnInit {
         ],
       },
       options: {
-        responsive: true,
+        responsive: false,
         plugins: {
           legend: {
             display: true,
@@ -216,4 +221,13 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
+
+  getReviews(): void {
+    this.reviewService.getAllReviews().subscribe({
+      next: (response) => {
+        this.reviews = response.data;
+      }
+    })
+  }
+
 }
