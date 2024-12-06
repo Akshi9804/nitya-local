@@ -9,13 +9,26 @@
   </div>
   <div class="reports">
     <div class="chart-item bar_chart">
-      <canvas id="chart_1" height="350px" width="420px"></canvas>
+      <canvas id="chart_1" height="320px" width="750px"></canvas>
     </div>
     <div class="chart-item">
       <canvas id="chart_2" height="290px"></canvas>
     </div>
-    <div class="chart-item">
-      <canvas id="chart_3"></canvas>
+
+    <div class="chart-item review_pane">
+      <div class="reviews-header">
+        <p>Comments</p>
+      </div>
+      <div class="reviews" *ngFor="let review of reviews">
+        <div class="review-card">
+          <div class="review-user">{{ review.locName }}</div>
+          <div class="review-text">{{ review.review }}</div>
+        </div>
+      </div>
     </div>
+    
+
+    <div class="chart-item alert_pane"></div>
+    <div class="chart-item"></div>
   </div>
 </div>

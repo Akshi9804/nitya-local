@@ -1,52 +1,126 @@
 .dashboard_pane {
-    width: 90%;
-    margin: auto;
+  margin-left: 20px;
+  margin-right: 20px;
 
-    .user{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        h1{
-            margin-top: 15px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            span{
-                color: rgb(53,94,59);
-            }
-        }
-        .btn-container{
-            button{
-                border: 0px;
-                background-color: rgb(70, 121, 78);
-                color: white;
-                padding: 10px 16px;
-                transition: all 1s ease;
-                &:hover{
-                    background-color: rgb(43, 77, 48);
-                    cursor: pointer;
-                }
-
-            }
-        }
+  .user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h1 {
+      margin-top: 15px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      span {
+        color: rgb(53, 94, 59);
+      }
     }
-
-    .reports{
-        margin-top: 30px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        height: 100%;
-        width: 100%;
-        .chart-item {
-          height: 320px;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 22vw;
-          margin-bottom: 20px;
+    .btn-container {
+      button {
+        border: 0px;
+        background-color: rgb(70, 121, 78);
+        color: white;
+        padding: 10px 16px;
+        transition: all 1s ease;
+        &:hover {
+          background-color: rgb(43, 77, 48);
+          cursor: pointer;
         }
+      }
     }
-    
   }
+
+  .reports {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    .chart-item {
+      height: 320px;
+      background-color: whitesmoke;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 22vw;
+      margin-bottom: 20px;
+
+      &.bar_chart {
+        width: 55vw;
+      }
+
+      &.review_pane {
+        width: 35vw;
+      }
+    }
+
+    .review_pane {
+      width: 100%;
+      padding: 0px;
+      max-width: 600px;
+      max-height: 320px;
+      overflow: scroll;
+      overflow-x: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    .reviews-header p {
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+      color: rgb(53, 94, 59);
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    .review-card {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .review-card:hover {
+      transform: scale(1.02);
+    }
+
+    .review-user {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #007bff;
+      margin-bottom: 5px;
+    }
+
+    .review-text {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .review_pane::-webkit-scrollbar {
+      width: 8px; /* Width of the vertical scrollbar */
+    }
+
+    .review_pane::-webkit-scrollbar-track {
+      background: #f1f1f1; /* Light background for the scrollbar track */
+      border-radius: 8px; /* Rounded track corners */
+    }
+
+    .review_pane::-webkit-scrollbar-thumb {
+      background-color: #007bff; /* Match the location (username) color */
+      border-radius: 8px; /* Rounded scrollbar corners */
+      border: 2px solid #f9f9f9; /* Space between thumb and track for a clean look */
+    }
+
+    .review_pane::-webkit-scrollbar-thumb:hover {
+      background-color: #0056b3; /* Darker shade of blue on hover */
+    }
+  }
+}
