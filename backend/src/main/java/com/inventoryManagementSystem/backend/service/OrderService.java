@@ -25,6 +25,8 @@ public class OrderService {
     private final StockAdjustmentLogRepository stockAdjustmentLogRepository;
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final LocationRepository locationRepository;
+    private final NotificationService notificationService;
+    private final UserRepository userRepository;
 
     public CommonResponse<String> addOutgoingOrder(Order order,String userId) {
 
@@ -153,6 +155,18 @@ public class OrderService {
                     log.setReason("Incoming order");
                     log.setTimeStamp(LocalDateTime.now());
                     stockAdjustmentLogRepository.save(log);
+
+                    //creating the notifications
+                    List<User> users = userRepository.findAll();
+                    String message = "Item " + item.get().getName() + " has arrived to Location" + location.get().getName();
+
+                    // Create and save notifications for each admin
+                    for (User user : users) {
+                        notificationService.addNotification(user.getUserId(),message,"Item Arrival");
+                    }
+
+                    System.out.println("Notification sent to users for item: " + item.get().getName());
+
                 }
             });
             orderRepository.saveAll(pendingOrders);

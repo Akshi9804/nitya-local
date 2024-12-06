@@ -1,13 +1,13 @@
 <div class="location-details-panel">
-<div class="location-details">
-    <p>{{location.name}}</p>
-    <p>{{location.address}}</p>
-</div>
-<button (click)="openAddExistingItem()">Add New Item</button>
-<h3>Items in Stock</h3>
+  <div class="location-details">
+    <h1>{{location?.name}}</h1>
+    <p>{{location?.address}}</p>
+  </div>
+  <button (click)="openAddExistingItem()" *ngIf="isAdmin">Add New Item</button>
+  <h3>Items in Stock</h3>
   <div class="items">
-  <li class="item" *ngFor="let item of itemsAtLocation">
-<p>{{item.itemName}} : {{item.quantity}}</p>
-  </li>
+    <li class="item" *ngFor="let item of itemsAtLocation">
+      <p>{{item.itemName}} : {{item.quantity}}</p>
+    </li>
   </div>
 </div>

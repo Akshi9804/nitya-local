@@ -1,15 +1,52 @@
 .dashboard_pane {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-  height: 100%;
-  .chart-item {
-    height: 350px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 30vw;
+    width: 90%;
+    margin: auto;
+
+    .user{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        h1{
+            margin-top: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            span{
+                color: rgb(53,94,59);
+            }
+        }
+        .btn-container{
+            button{
+                border: 0px;
+                background-color: rgb(70, 121, 78);
+                color: white;
+                padding: 10px 16px;
+                transition: all 1s ease;
+                &:hover{
+                    background-color: rgb(43, 77, 48);
+                    cursor: pointer;
+                }
+
+            }
+        }
+    }
+
+    .reports{
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        .chart-item {
+          height: 320px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 22vw;
+          margin-bottom: 20px;
+        }
+    }
+    
   }
-}

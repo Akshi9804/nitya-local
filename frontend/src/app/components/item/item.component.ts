@@ -10,11 +10,14 @@ import { ConfirmationDialogComponent } from '../common-elements/confirmation-dia
 import { LocationService } from '../../services/location.service';
 import { Location } from '../../interfaces/location.interface';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { CustomDatePipe } from '../../pipes/custom-date.pipe';
+import { PricePipe } from '../../pipes/price.pipe';
 
 @Component({
   selector: 'app-item',
   standalone: true,
-  imports: [MatIconModule,MatButtonModule,CommonModule],
+  imports: [MatIconModule,MatButtonModule,CommonModule,CustomDatePipe,PricePipe],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss'
 })
@@ -22,13 +25,15 @@ export class ItemComponent implements OnInit{
   item:Item;
   message:String;
   locations:string[];
+  isAdmin:boolean;
 
   constructor(private dialog: MatDialog,private itemService:ItemService,
     private route:ActivatedRoute,private router : Router,
-  private locationService:LocationService){}
+  private locationService:LocationService,private authService: AuthService){}
 
   ngOnInit() {
    this.refreshItemData();
+    this.isAdmin=this.authService.isUserAdmin();
   }
 
   openEditItem(){

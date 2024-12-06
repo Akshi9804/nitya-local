@@ -7,6 +7,7 @@ import { AddNewLocationComponent } from '../add-new-location/add-new-location.co
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-locations',
@@ -17,15 +18,18 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 })
 export class LocationsComponent implements OnInit {
   locations: Location[] = [];
+  isAdmin:boolean;
 
   constructor(
     private locationService: LocationService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private authService:AuthService
   ) {}
 
   ngOnInit(): void {
     this.fetchLocations();
+    this.isAdmin=this.authService.isUserAdmin();
   }
 
   fetchLocations() {

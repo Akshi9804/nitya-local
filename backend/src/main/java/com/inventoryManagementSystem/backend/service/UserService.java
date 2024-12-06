@@ -68,7 +68,7 @@ public class UserService {
         if(exists2) {
             optionalUser = userRepository.findByEmail(nameOrEmail);
         }
-        if(optionalUser.isPresent()) {
+        if(optionalUser!=null && optionalUser.isPresent()) {
             User user=optionalUser.get();
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return Utility.getResponse(new StatusEntry(ResponseEnum.RETRIEVED_SUCCESSFULLY), user);
@@ -78,4 +78,5 @@ public class UserService {
         }
         return Utility.getResponse(new StatusEntry(ResponseEnum.NO_DATA), "User with name or email not found");
     }
+
 }

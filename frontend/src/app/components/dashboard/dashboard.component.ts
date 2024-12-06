@@ -1,70 +1,110 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { User } from '../../interfaces/user.interface';
+import { AuthService } from '../../services/auth.service';
 import { ItemService } from '../../services/item.service';
 import { Item } from '../../interfaces/item.interface';
 import { Order } from '../../interfaces/order.interface';
 import { OrderService } from '../../services/order.service';
 import { Chart } from 'chart.js/auto';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [CommonModule], // Add other required imports
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrls: ['./dashboard.component.scss'], // Fixed typo
 })
 export class DashboardComponent implements OnInit {
-  constructor(private userService: UserService, private itemService: ItemService, private orderService: OrderService) { }
-  user: User;
-  items: Item[];
-  orders: Order[];
+  user: User | null = null;
+  items: Item[] = [];
+  orders: Order[] = [];
+  barGraphData:any;
 
   public chart_1: any;
   public chart_2: any;
 
-  chart1DataPointsArray = [0, 0, 0, 0];
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private itemService: ItemService,
+    private orderService: OrderService
+  ) { }
 
   ngOnInit(): void {
-    this.userService.getUser();
+    this.user = this.authService.getUser();
     this.getItems();
+    console.log(this.items);
     this.getOrders();
+    
+    console.log(this.barGraphData);
   }
 
-  //Bar Chart
+  signOut(){
+    this.authService.logout();
+  }
+
   getItems() {
     this.itemService.getItems().subscribe({
       next: (response) => {
-        this.items = response.data;
+        this.items = response.data || [];
+        console.log(this.items);
+        this.barGraphData = this.items.reduce((acc, item) => {
+          acc[item.category] = (acc[item.category] || 0) + 1;
+          return acc;
+        }, {});
+        console.log(this.barGraphData);
         this.prepareItemsChart();
-      }
+      },
+      error: (err) => {
+        console.error('Error fetching items:', err);
+      },
     });
   }
 
-  //Pie Chart
+  getCategoriesWithCounts(): { [key: string]: number } {
+    const categoryCounts: { [key: string]: number } = {};
+  
+    // Count items per category
+    this.items.forEach((item) => {
+      if (item.category) {
+        categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
+      }
+    });
+  
+    return categoryCounts;
+  }
+
   getOrders() {
     this.orderService.getOrders().subscribe({
       next: (response) => {
-        this.orders = response.data;
+        this.orders = response.data || [];
         this.preparePieChart();
-      }
+      },
+      error: (err) => {
+        console.error('Error fetching orders:', err);
+      },
     });
   }
 
   prepareItemsChart() {
+    const labels = Object.keys(this.barGraphData); 
+  const data = Object.values(this.barGraphData);
+  console.log(labels,data)
     this.chart_1 = new Chart('chart_1', {
       type: 'bar',
       data: {
-        labels: ['cat 1', 'cat 2', 'cat 3', 'cat 4'],
+        labels: labels,
         datasets: [
           {
             label: 'Categories',
-            data: [10, 20, 30, 40],
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'], // Bar colors
-            borderColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'], // Bar border colors
-            borderWidth: 1, // Border thickness
-            barThickness: 50, // Set the bar width (fixed value in pixels)
-            maxBarThickness: 50, // Ensure bar width doesn't exceed this value
+            data: data,
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+            borderColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+            borderWidth: 1,
+            barThickness: 50,
+            maxBarThickness: 50,
           },
         ],
       },
@@ -72,7 +112,7 @@ export class DashboardComponent implements OnInit {
         responsive: true,
         plugins: {
           legend: {
-            display: true, // Show legend
+            display: true,
             labels: {
               font: {
                 size: 14,
@@ -92,7 +132,7 @@ export class DashboardComponent implements OnInit {
         scales: {
           x: {
             grid: {
-              display: false, // Remove vertical gridlines
+              display: false,
             },
             ticks: {
               color: '#333',
@@ -104,7 +144,7 @@ export class DashboardComponent implements OnInit {
           },
           y: {
             grid: {
-              display: false, // Remove horizontal gridlines
+              display: false,
             },
             ticks: {
               color: '#333',
@@ -120,55 +160,52 @@ export class DashboardComponent implements OnInit {
   }
 
   preparePieChart() {
-
     let incomingOrders = 0;
     let outgoingOrders = 0;
 
-    this.orders.forEach(order => {
-      if (order.orderType === 'Incoming')
-        incomingOrders += order.quantity;
-      else
-        outgoingOrders += order.quantity;
-    })
+    this.orders.forEach((order) => {
+      if (order.orderType === 'Incoming') incomingOrders += order.quantity;
+      else outgoingOrders += order.quantity;
+    });
 
     this.chart_2 = new Chart('chart_2', {
       type: 'pie',
       data: {
-        labels: ['Incoming Orders', 'Outgoing Orders'], // Labels for the two types of data
+        labels: ['Incoming Orders', 'Outgoing Orders'],
         datasets: [
           {
-            data: [incomingOrders, outgoingOrders], // Numbers corresponding to Incoming and Outgoing
-            backgroundColor: ['#36A2EB', '#FF6384'], // Colors for the pie segments
-            borderColor: ['#36A2EB', '#FF6384'], // Optional: Border colors
-            borderWidth: 1, // Border thickness
+            data: [incomingOrders, outgoingOrders],
+            backgroundColor: ['#36A2EB', '#FF6384'],
+            borderColor: ['#36A2EB', '#FF6384'],
+            borderWidth: 1,
           },
         ],
       },
       options: {
-        responsive: true,
+        responsive: false,
         plugins: {
           legend: {
-            display: true, // Show legend for the chart
-            position: 'top', // Legend position: top, bottom, left, right
+            display: true,
+            position: 'top',
             labels: {
               font: {
                 size: 14,
                 family: 'Arial, sans-serif',
               },
-              color: '#333', // Legend text color
+              color: '#333',
             },
           },
           tooltip: {
-            enabled: true, // Enable tooltips
+            enabled: true,
             callbacks: {
               label: (tooltipItem) => {
-                const value = tooltipItem.raw as number; // Access the raw value
+                const value = tooltipItem.raw as number;
                 const total = (tooltipItem.dataset.data as number[]).reduce(
                   (acc, curr) => acc + curr,
                   0
                 );
-                const percentage = ((value / total) * 100).toFixed(2); // Calculate percentage
-                return `${tooltipItem.label}: ${value} (${percentage}%)`; // Display value and percentage
+                const percentage = ((value / total) * 100).toFixed(2);
+                return `${tooltipItem.label}: ${value} (${percentage}%)`;
               },
             },
           },
@@ -176,6 +213,4 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
-
-
 }

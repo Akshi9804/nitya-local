@@ -3,7 +3,7 @@
   
   <div class="locations">
     <h1>Locations</h1>
-    <button (click)="openLocationDialog()">Add Location</button>
+    <button (click)="openLocationDialog()" *ngIf="isAdmin">Add Location</button>
     <div class="card" *ngFor="let location of locations">
       <div class="content">
         <p>{{location.name}}</p>

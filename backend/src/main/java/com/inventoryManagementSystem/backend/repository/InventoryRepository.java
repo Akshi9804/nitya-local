@@ -13,4 +13,5 @@ public interface InventoryRepository extends MongoRepository<Item, String> {
     boolean existsByName(String name);
     List<Item> findAllByItemIdIn(List<String> itemIds);
     Optional<Item> findByItemId(String itemId);
+    List<Item> findByQuantityLessThan(int reorderLevel);
 }

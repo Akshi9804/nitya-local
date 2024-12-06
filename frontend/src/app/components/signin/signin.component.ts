@@ -72,8 +72,7 @@ export class SigninComponent {
           }
           else{
             const user:User= Array.isArray(res.data) ? res.data[0]:res.data;
-            this.userService.setUser(user);
-            this.authService.login();
+            this.authService.login(user);
             console.log(user);
             this.router.navigate(['/task']);  
             

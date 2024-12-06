@@ -5,6 +5,7 @@ import { Location } from '../../interfaces/location.interface';
 import { ItemService } from '../../services/item.service';
 import { Item } from '../../interfaces/item.interface';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-location-details',
@@ -17,16 +18,19 @@ export class LocationDetailsComponent implements OnInit {
   location: Location;
   items: Item[];
   itemsAtLocation:any[];
+  isAdmin:boolean;
 
   constructor(
     private route: ActivatedRoute,
     private locationService: LocationService,
     private itemService: ItemService,
-    private router:Router
+    private router:Router,
+    private authService:AuthService
   ) {}
 
   ngOnInit() {
     this.fetchLocationDetails();
+    this.isAdmin=this.authService.isUserAdmin();
   }
 
   fetchLocationDetails() {
