@@ -16,11 +16,12 @@ import { Notification } from '../../interfaces/notification.interface';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { InsightService } from '../../services/insight.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule,FormsModule,MatCheckboxModule,MatIconModule], // Add other required imports
+  imports: [CommonModule, FormsModule, MatCheckboxModule, MatIconModule], // Add other required imports
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'], // Fixed typo
 })
@@ -30,9 +31,11 @@ export class DashboardComponent implements OnInit {
   orders: Order[] = [];
   reviews: Review[] = [];
   barGraphData: any;
-  notifications: Notification[] = []; 
-  displayedNotifications: Notification[] = []; 
-  showRead: boolean = false; 
+  notifications: Notification[] = [];
+  displayedNotifications: Notification[] = [];
+  showRead: boolean = false;
+  analysisResponse = '';
+  pleaseWaitText = 'Fetching your response, please wait!'
 
   public chart_1: any;
   public chart_2: any;
@@ -42,9 +45,10 @@ export class DashboardComponent implements OnInit {
     private userService: UserService,
     private itemService: ItemService,
     private orderService: OrderService,
-    private snackbar:SnackbarService,
+    private snackbar: SnackbarService,
     private reviewService: ReviewService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private insightService: InsightService
   ) { }
 
   ngOnInit(): void {
@@ -81,14 +85,14 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  markAsRead(notId:string){
+  markAsRead(notId: string) {
     this.notificationService.maskNotificationAsRead(notId).subscribe({
-      next: (res)=>{
+      next: (res) => {
         console.log(res.data);
         this.fetchNotifications();
       },
-      error:(err)=>{
-        console.log("Error marking notification read: ",err)
+      error: (err) => {
+        console.log("Error marking notification read: ", err)
       }
     });
   }
@@ -251,7 +255,7 @@ export class DashboardComponent implements OnInit {
       }
     })
   }
-  
+
 
 
   fetchNotifications(): void {
@@ -270,6 +274,28 @@ export class DashboardComponent implements OnInit {
     } else {
       this.displayedNotifications = this.notifications.filter((n) => !n.read);
     }
+  }
+
+  onSelectionChange(event: any) {
+    const selectedValue = event.target.value;
+    // Call specific functions based on selected value
+    if (selectedValue === 'orderSupplier') {
+      this.provideInsightsForOrderSupplier();
+    }
+    // Add more conditions for other options here
+  }
+  provideInsightsForOrderSupplier(): void {
+    const orderString = JSON.stringify(this.orders);
+    const itemString = JSON.stringify(this.items);
+    const prompt = `This is order data : ${orderString} and this is items data: ${itemString}, provide me analytical insights to it and do some predictions`
+
+    this.analysisResponse = this.pleaseWaitText
+
+    this.insightService.getInsights(prompt).subscribe({
+      next: (res) => {
+        this.analysisResponse = res.result.response
+      }
+    })
   }
 
 }

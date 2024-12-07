@@ -121,3 +121,10 @@
   }
   
   
+  ::ng-deep .mat-mdc-tab .mdc-tab-indicator__content--underline {
+    border-color: rgb(53, 94, 59) !important;
+  }
+  
+  ::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+    color: black !important;
+  }
