@@ -15,7 +15,6 @@
                 <p><strong>Logged By:</strong> {{ order.loggedBy }}</p>
               </mat-card-content>
               <mat-card-actions>
-                <button mat-button class="edit-button"  (click)="editOrder(order)">Edit</button>
                 <button mat-button class="approve-button"  (click)="approveOrder(order.poId)">Approve</button>
                 <button mat-button class="decline-button"  (click)="declineRequest(order.poId)">Decline</button>
               </mat-card-actions>
@@ -23,7 +22,7 @@
           </div>
           </mat-tab>
 
-        <mat-tab label="Purchse Orders" style="padding: 20px;"> 
+        <mat-tab label="Purchase Orders" style="padding: 20px;"> 
           <p class="no-data" *ngIf="approvedOrders.length==0"> There are no request orders</p>
             <div class="mat-elevation-z8" *ngIf="approvedOrders.length>0">
                 <table mat-table [dataSource]="dataSource">

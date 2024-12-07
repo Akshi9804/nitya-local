@@ -11,11 +11,16 @@ import { CommonModule } from '@angular/common';
 import { SnackbarService } from '../../services/snackbar.service';
 import { Review } from '../../interfaces/review.interface';
 import { ReviewService } from '../../services/review.service';
+import { NotificationService } from '../../services/notification.service';
+import { Notification } from '../../interfaces/notification.interface';
+import { FormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule], // Add other required imports
+  imports: [CommonModule,FormsModule,MatCheckboxModule,MatIconModule], // Add other required imports
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'], // Fixed typo
 })
@@ -25,6 +30,9 @@ export class DashboardComponent implements OnInit {
   orders: Order[] = [];
   reviews: Review[] = [];
   barGraphData: any;
+  notifications: Notification[] = []; 
+  displayedNotifications: Notification[] = []; 
+  showRead: boolean = false; 
 
   public chart_1: any;
   public chart_2: any;
@@ -35,7 +43,8 @@ export class DashboardComponent implements OnInit {
     private itemService: ItemService,
     private orderService: OrderService,
     private snackbar:SnackbarService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -44,6 +53,7 @@ export class DashboardComponent implements OnInit {
     console.log(this.items);
     this.getOrders();
     this.getReviews();
+    this.fetchNotifications();
 
     console.log(this.barGraphData);
   }
@@ -68,6 +78,18 @@ export class DashboardComponent implements OnInit {
       error: (err) => {
         console.error('Error fetching items:', err);
       },
+    });
+  }
+
+  markAsRead(notId:string){
+    this.notificationService.maskNotificationAsRead(notId).subscribe({
+      next: (res)=>{
+        console.log(res.data);
+        this.fetchNotifications();
+      },
+      error:(err)=>{
+        console.log("Error marking notification read: ",err)
+      }
     });
   }
 
@@ -228,6 +250,26 @@ export class DashboardComponent implements OnInit {
         this.reviews = response.data;
       }
     })
+  }
+  
+
+
+  fetchNotifications(): void {
+    this.notificationService.getAllNotifications(this.user.userId).subscribe({
+      next: (response) => {
+        this.notifications = response.data || [];
+        this.filterNotifications();
+      },
+      error: (err) => console.error('Error fetching notifications:', err),
+    });
+  }
+
+  filterNotifications(): void {
+    if (this.showRead) {
+      this.displayedNotifications = this.notifications;
+    } else {
+      this.displayedNotifications = this.notifications.filter((n) => !n.read);
+    }
   }
 
 }

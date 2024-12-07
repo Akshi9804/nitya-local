@@ -12,21 +12,37 @@ export class UserService {
 
 
   constructor(private http:HttpClient){}
-  role : string = "admin";
-  userId: string = "USR-1";
-
-  role1 : string = "staff";
-  userId1: string = "USR-2";
 
   signupUser(user: User): Observable<ApiResponse<String>> {
-    user.role = 'staff';
-    user.isActive = true;
-    console.log(user);
     return this.http.post<ApiResponse<String>>(`${this.baseUrl}/signup`, user);
   }
 
   signinUser(cred: any): Observable<ApiResponse<User>> {
     return this.http.post<ApiResponse<User>>(`${this.baseUrl}/signin`, cred);
+  }
+
+  getStaff():Observable<ApiResponse<User>> {
+    return this.http.get<ApiResponse<User>>(`${this.baseUrl}/staff`);
+  }
+
+  getUnapprovedUsers():Observable<ApiResponse<User>> {
+    return this.http.get<ApiResponse<User>>(`${this.baseUrl}/no-role`);
+  }
+
+  approveUser(userId:string,role:string):Observable<ApiResponse<String>> {
+    return this.http.put<ApiResponse<String>>(`${this.baseUrl}/approve-user/${userId}`,role);
+  }
+
+  declineUser(userId:string):Observable<ApiResponse<String>> {
+    return this.http.delete<ApiResponse<String>>(`${this.baseUrl}/decline-user/${userId}`);
+  }
+
+  activateUser(userId:string):Observable<ApiResponse<String>> {
+    return this.http.put<ApiResponse<String>>(`${this.baseUrl}/activate-user`,userId);
+  }
+
+  deactivateUser(userId:string):Observable<ApiResponse<String>> {
+    return this.http.put<ApiResponse<String>>(`${this.baseUrl}/deactivate-user`,userId);
   }
 
 }

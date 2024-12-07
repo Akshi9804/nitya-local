@@ -8,6 +8,7 @@ import { PurchaseOrderService } from '../../services/purchase-order.service';
 import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-purchase-order',
@@ -22,12 +23,13 @@ export class PurchaseOrderComponent implements OnInit {
   approvedOrders: PurchaseOrder[] = [];
   dataSource = new MatTableDataSource<PurchaseOrder>([]);
   displayedColumns: string[]=['poId','orderId', 'supplierName', "itemName" , 'quantity','orderDate','expectedDelivery','approvalStatus'];
-
-  constructor(private purchaseOrderService:PurchaseOrderService,private cdr: ChangeDetectorRef){}
+  userId:string;
+  constructor(private purchaseOrderService:PurchaseOrderService,private cdr: ChangeDetectorRef,private authService:AuthService){}
 
   ngOnInit(): void {
     this.fetchApprovedOrders();
     this.fetchPendingOrders();
+    this.userId=this.authService.getUser().userId;
   }
 
   fetchPendingOrders(){
@@ -55,12 +57,9 @@ export class PurchaseOrderComponent implements OnInit {
     })
   }
 
-  editOrder(order: PurchaseOrder) {
-    console.log('Editing order:', order);
-  }
 
   approveOrder(poId: string) {
-    this.purchaseOrderService.approveRequest(poId).subscribe({
+    this.purchaseOrderService.approveRequest(poId,this.userId).subscribe({
       next: (response) => {
         console.log(response.data);
         this.fetchApprovedOrders();

@@ -16,8 +16,8 @@ export class OrderService {
     return this.http.get<ApiResponse<Order>>(this.baseUrl);
   }
 
-  addOrder(order:Order,userId:string): Observable<ApiResponse<String>>{
-    return this.http.post<ApiResponse<String>>(`${this.baseUrl}/${userId}`,order);
+  addOrder(order:Order,userId:string,role:string): Observable<ApiResponse<String>>{
+    return this.http.post<ApiResponse<String>>(`${this.baseUrl}/${userId}?role=${role}`,order);
   }
 
   

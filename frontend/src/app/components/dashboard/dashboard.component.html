@@ -26,9 +26,30 @@
         </div>
       </div>
     </div>
-    
 
-    <div class="chart-item alert_pane"></div>
+
+    <div class="chart-item alert_pane">
+      <div class="alert_pane_head">
+        <span class="material-symbols-outlined">
+          notifications_active
+          </span>
+        <mat-checkbox [(ngModel)]="showRead" (change)="filterNotifications()">Show Read Notifications</mat-checkbox>
+      </div>
+
+      <div class="notifications" *ngFor="let notification of displayedNotifications">
+        <div class="notification" [class.unread]="!notification.read">
+          <div class="not-head">
+            <h4>{{ notification.alertType }}</h4>
+            <button (click)="markAsRead(notification.notificationId)" *ngIf="!notification.read">Mark as read</button>
+          </div>
+          
+          <p>{{ notification.message }}</p>
+          <small>{{ notification.timeStamp | date: 'medium' }}</small>
+        </div>
+      </div>
+
+
+    </div>
     <div class="chart-item"></div>
   </div>
 </div>

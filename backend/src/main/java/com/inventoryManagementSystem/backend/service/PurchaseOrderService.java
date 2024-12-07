@@ -23,6 +23,7 @@ public class PurchaseOrderService {
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final OrderRepository orderRepository;
     private final SupplierRepository supplierRepository;
+    private final UserActivityLogService userActivityLogService;
 
     public CommonResponse<List<PurchaseOrder>> getPendingPurchaseOrders() {
         List<PurchaseOrder> pendingOrders = purchaseOrderRepository.findByApprovalStatus("Pending");
@@ -34,7 +35,7 @@ public class PurchaseOrderService {
         return Utility.getResponse(new StatusEntry(ResponseEnum.RETRIEVED_SUCCESSFULLY), approvedOrders);
     }
 
-    public CommonResponse<String> changeApprovalStatus(String poId) {
+    public CommonResponse<String> changeApprovalStatus(String poId,String userId) {
         Optional<PurchaseOrder> po = purchaseOrderRepository.findByPoId(poId);
         String data;
         if(po.isPresent()){
@@ -46,6 +47,7 @@ public class PurchaseOrderService {
             order.setDeliveryDate(po.get().getExpectedDelivery());
             purchaseOrderRepository.save(po.get());
             orderRepository.save(order);
+            userActivityLogService.addUserActivityLog(userId,"Purchase order request approved",  order.getOrderId()+" is approved");
             data=po.get().getPoId()+"("+po.get().getOrderId()+") approved";
             return Utility.getResponse(new StatusEntry(ResponseEnum.UPDATED_SUCCESSFULLY),data);
         }else{

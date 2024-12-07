@@ -22,14 +22,34 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final InventoryRepository inventoryRepository;
     private final UserRepository userRepository;
+    private final CounterService counterService;
 
     public CommonResponse<List<Notification>> getNotificationsByUserId(String userId) {
         List<Notification> notifications= notificationRepository.findByUserId(userId);
         return Utility.getResponse(new StatusEntry(ResponseEnum.RETRIEVED_SUCCESSFULLY), notifications);// No sorting applied
     }
 
+    public CommonResponse<String> markNotificationAsRead(String notificationId) {
+        Optional<Notification> optionalNotification = notificationRepository.findByNotificationId(notificationId);
+
+        if (optionalNotification.isPresent()) {
+            Notification notification = optionalNotification.get();
+            if (!notification.isRead()) {
+                notification.setRead(true);
+                notificationRepository.save(notification);
+                return Utility.getResponse(new StatusEntry(ResponseEnum.UPDATED_SUCCESSFULLY), "Notification marked as read.");
+            } else {
+                return Utility.getResponse(new StatusEntry(ResponseEnum.ALREADY_EXISTS), "Notification is already marked as read.");
+            }
+        } else {
+            return Utility.getResponse(new StatusEntry(ResponseEnum.NO_DATA), "Notification not found.");
+        }
+    }
+
     public void addNotification(String userId, String message, String alertType) {
         Notification notification = new Notification();
+        long notificationSequence = counterService.generateSequence("notificationId");
+        notification.setNotificationId("NOT-" + notificationSequence);
         notification.setUserId(userId);
         notification.setMessage(message);
         notification.setAlertType(alertType);
@@ -55,7 +75,7 @@ public class NotificationService {
 
             // Create and save notifications for all low-stock items
             for (Item item : itemsWithLowStock) {
-                String message = "Item " + item.getName() + " has low stock. Current quantity: " + item.getQuantity();
+                String message = "Item " + item.getName() + " has low stock";
 
                 // Create notifications for each admin
                 for (User admin : admins) {

@@ -33,6 +33,10 @@ export class LocationService {
     return this.http.put<ApiResponse<String>>(`${this.baseUrl}/add-existing-item`,{locId:locId,itemId:itemId});
   }
 
+  deleteExistingItemForLocation(locId:string,itemName:string):Observable<ApiResponse<String>> {
+    return this.http.put<ApiResponse<String>>(`${this.baseUrl}/delete-existing-item/${locId}`,itemName);
+  }
+
   getAllLocationsByIds(ids:string[]): Observable<ApiResponse<Location>> {
     return this.http.post<ApiResponse<Location>>(`${this.baseUrl}/get-locations`,ids);
   }

@@ -20,8 +20,8 @@ export class PurchaseOrderService {
     return this.http.get<ApiResponse<PurchaseOrder>>(`${this.baseUrl}/approved`);
   }
 
-  approveRequest(poId : string):Observable<ApiResponse<String>>{
-    return this.http.put<ApiResponse<String>>(`${this.baseUrl}/changeStatus`,{poId:poId});
+  approveRequest(poId : string,userId:string):Observable<ApiResponse<String>>{
+    return this.http.put<ApiResponse<String>>(`${this.baseUrl}/changeStatus`,{poId:poId,userId:userId});
   }
 
   declineRequest(poId:string):Observable<ApiResponse<String>>{

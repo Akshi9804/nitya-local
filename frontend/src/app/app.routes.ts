@@ -21,6 +21,7 @@ import { TransferStockComponent } from './components/transfer-stock/transfer-sto
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { authGuard } from './guards/auth.guard';
 import { authAdminGuard } from './guards/auth-admin.guard';
+import { UsersComponent } from './components/users/users.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -41,10 +42,10 @@ export const routes: Routes = [
             },
             {
                 path: 'suppliers',
-                component: SuppliersComponent,canActivate: [authAdminGuard],
+                component: SuppliersComponent,
                 children: [
                     {path:"",component:ViewSuppliersComponent},
-                    { path: 'add', component: AddSupplierComponent } ,
+                    { path: 'add', component: AddSupplierComponent,canActivate: [authAdminGuard] } ,
                     { path: ':supplierId', component: SupplierComponent }
                   ]
             },
@@ -69,7 +70,11 @@ export const routes: Routes = [
                 { path: ':locId', component: LocationDetailsComponent },
                 { path: ':locId/add-existing-item-location', component: AddExistingItemLocationComponent ,canActivate: [authAdminGuard]},
               ]
-            },
+            },{
+              path: 'users',
+              component: UsersComponent,
+              canActivate: [authAdminGuard]
+            }
             
           ]
     },

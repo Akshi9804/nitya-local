@@ -13,6 +13,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { Order } from '../../interfaces/order.interface';
 import { UserService } from '../../services/user.service';
 import { LocationService } from '../../services/location.service';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../interfaces/user.interface';
 
 
 
@@ -32,20 +34,18 @@ export class OrdersComponent implements OnInit, AfterViewInit{
   orders:Order[]=[];
   dataSource = new MatTableDataSource<Order>([]);
   displayedColumns: string[]=['orderId', 'supplierId', "itemId" , "orderType" , 'quantity','orderDate','deliveryDate','status'];
-  role:string;
   availableLocations: any[] = []; 
   item:Item;
-
+  user:User;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private formBuilder: FormBuilder,
     private supplierService: SupplierService,
     private itemService: ItemService,
-    private router: Router,
     private orderService:OrderService,
-    private userService:UserService,
-    private locationService:LocationService
+    private locationService:LocationService,
+    private authService:AuthService
   ) {
     this.constructForm();
   }
@@ -76,8 +76,7 @@ export class OrdersComponent implements OnInit, AfterViewInit{
         });
       }
     });
-    this.role=this.userService.role;
-
+    this.user=this.authService.getUser();
     this.getOrders();
   }
 
@@ -146,7 +145,7 @@ export class OrdersComponent implements OnInit, AfterViewInit{
 
     const orderData = this.addOrderForm.value;
     console.log('Order Data:', orderData);
-    this.orderService.addOrder(orderData,this.userService.userId1).subscribe({
+    this.orderService.addOrder(orderData,this.user.userId,this.user.role).subscribe({
       next: (response) => {
         this.addOrderForm.reset();
       this.disableAddOrder = true;

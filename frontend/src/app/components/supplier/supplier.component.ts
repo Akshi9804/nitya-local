@@ -12,6 +12,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { ConfirmationDialogComponent } from '../common-elements/confirmation-dialog/confirmation-dialog.component';
 import { SnackbarService } from '../../services/snackbar.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-supplier',
@@ -24,17 +25,22 @@ export class SupplierComponent implements OnInit{
   supplier : Supplier ;
   items : Item[]=[];
   dataSource = new MatTableDataSource<Item>([]);
+  isAdmin:boolean;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
 
-  constructor(private route: ActivatedRoute, private supplierService: SupplierService, private itemService:ItemService,private dialog: MatDialog,private router:Router,private snackbarService:SnackbarService) {}
+  constructor(private route: ActivatedRoute, private supplierService: SupplierService, 
+    private itemService:ItemService,private dialog: MatDialog,
+    private router:Router,private snackbarService:SnackbarService,
+  private authService:AuthService) {}
 
   ngOnInit() {
     const supplierId = this.route.snapshot.params['supplierId'];
   if (supplierId) {
    this.fetchData(supplierId)
   }
+  this.isAdmin=this.authService.isUserAdmin();
   }
   
   displayedColumns: string[] = ['itemId', 'name', "category","deleteItem"];
@@ -42,13 +48,34 @@ export class SupplierComponent implements OnInit{
     this.dataSource.paginator = this.paginator;
   }
 
-  
+  deleteSupplier(){
+    this.supplierService.deleteSupplier(this.supplier.supplierId).subscribe({
+      next: (response) => {console.log('Delete successful:', response);
+        this.router.navigate(["/task/suppliers"])
+      },
+      error: (error) => console.error('Delete error:', error),
+    });
+  }
+
+  openConfirmationDialogForDelete(){
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { message: 'Are you sure you want to delete this item?' },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == "true") {
+        this.deleteSupplier();
+      } else {
+        console.log('Deletion canceled by user.');
+      }
+    });
+  }
 
   navigateToAddItem(){
     this.router.navigate(['/task/suppliers',this.supplier.supplierId,'add-item']);
   }
 
-  openConfirmationDialogForDelete(itemId:string){
+  openConfirmationDialogForDeleteItem(itemId:string){
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: { message: 'Are you sure you want to delete this item?' },
     });

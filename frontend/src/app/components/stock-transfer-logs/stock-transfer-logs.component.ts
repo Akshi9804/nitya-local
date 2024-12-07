@@ -22,7 +22,7 @@ export class StockTransferLogsComponent {
   ngOnInit(): void {
     this.fetchLogs();
   }
-  displayedColumns: string[] = ['itemId', "from", "to" , "quantity" , 'transferDate', 'deliveryDate' ,'loggedBy','status'];
+  displayedColumns: string[] = ['itemId', "from", "to" , "quantity" , 'transferDate', 'deliveryDate' ,'status'];
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

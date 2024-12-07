@@ -26,4 +26,5 @@ public class Order {
     private LocalDateTime orderDate;
     private LocalDateTime deliveryDate;
     private String status;
+    private String userId;
 }

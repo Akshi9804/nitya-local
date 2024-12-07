@@ -26,9 +26,9 @@ public class OrderController {
 
     // Add a supplier
     @PostMapping("/{id}")
-    public ResponseEntity<CommonResponse<String>> addOrderByStaff(@RequestBody Order order,@PathVariable String id) {
+    public ResponseEntity<CommonResponse<String>> addOrderByStaff(@RequestBody Order order,@PathVariable String id,@RequestParam String role) {
         if(order.getOrderType().equals("Incoming"))
-            return new ResponseEntity<>(orderService.addIncomingOrder(order,id,"staff"),HttpStatus.OK);
+            return new ResponseEntity<>(orderService.addIncomingOrder(order,id,role),HttpStatus.OK);
         else
             return new ResponseEntity<>(orderService.addOutgoingOrder(order,id),HttpStatus.OK);
     }

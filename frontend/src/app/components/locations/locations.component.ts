@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AddNewLocationComponent } from '../add-new-location/add-new-location.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({

@@ -23,4 +23,9 @@ public class NotificationController {
         System.out.println(userId);
         return new ResponseEntity<>(notificationService.getNotificationsByUserId(userId), HttpStatus.OK);
     }
+
+    @PutMapping
+    public ResponseEntity<CommonResponse<String>> markNotificationAsRead(@RequestBody String notId) {
+        return new ResponseEntity<>(notificationService.markNotificationAsRead(notId), HttpStatus.OK);
+    }
 }

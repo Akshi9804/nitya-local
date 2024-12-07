@@ -40,6 +40,9 @@ export class AddExistingItemComponent implements OnInit, AfterViewInit {
       width: '400px',
       data: { supplierId: this.supplierId },
     });
+    dialogRef.afterClosed().subscribe(() => {
+      this.fetchItems();
+    });
   }
 
   displayedColumns: string[] = ['itemId', 'name', "category", 'addItem'];

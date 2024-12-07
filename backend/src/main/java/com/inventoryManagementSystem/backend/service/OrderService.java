@@ -27,6 +27,7 @@ public class OrderService {
     private final LocationRepository locationRepository;
     private final NotificationService notificationService;
     private final UserRepository userRepository;
+    private final UserActivityLogService userActivityLogService;
 
     public CommonResponse<String> addOutgoingOrder(Order order,String userId) {
 
@@ -47,6 +48,9 @@ public class OrderService {
 
         // set status
         order.setStatus("Pending");
+        order.setUserId(userId);
+
+        userActivityLogService.addUserActivityLog(userId,"Order placed", "Outgoing order of "+item.get().getName()+" of quantity "+order.getQuantity()+" is palced");
 
         //set delivery date
         order.setDeliveryDate(LocalDateTime.now().plusMinutes(2));
@@ -82,6 +86,7 @@ public class OrderService {
             long orderSequence = counterService.generateSequence("orderId");
             order.setOrderId("ODR-" + orderSequence);
             order.setStatus("Pending");
+            order.setUserId(user);
         System.out.println(order.getLocId());
             Optional<Item> item = inventoryRepository.findByItemId(order.getItemId());
             Optional<Supplier> supplier = supplierRepository.findBySupplierId(order.getSupplierId());
@@ -106,8 +111,10 @@ public class OrderService {
                 po.setApprovalStatus("Approved");
                 po.setExpectedDelivery(LocalDateTime.now().plusMinutes(supplier.get().getDeliveryInDays()));
                 order.setDeliveryDate(po.getExpectedDelivery());
+                userActivityLogService.addUserActivityLog(user,"Purchase order placed", "Incoming order of "+item.get().getName()+" of quantity "+order.getQuantity()+" from supplier "+supplier.get().getName()+" is palced");
             } else{
                 po.setApprovalStatus("Pending");
+                userActivityLogService.addUserActivityLog(user,"Order request placed", "Incoming order of "+item.get().getName()+" of quantity "+order.getQuantity()+" from supplier "+supplier.get().getName()+" is palced");
             }
             purchaseOrderRepository.save(po);
             orderRepository.save(order);

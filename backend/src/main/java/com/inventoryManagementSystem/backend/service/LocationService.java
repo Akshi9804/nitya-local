@@ -109,7 +109,7 @@ public class LocationService {
         }
     }
 
-    public CommonResponse<String> deleteItemFromLocation(String locId, String itemId) {
+    public CommonResponse<String> deleteItemFromLocation(String locId, String itemName) {
         // Find the location by locId
         Optional<Location> dbLoc = locationRepository.findByLocId(locId);
 
@@ -118,13 +118,13 @@ public class LocationService {
             Location location = dbLoc.get();
 
             // Check if the item exists in stockDetails
-            if (location.getStockDetails().containsKey(itemId)) {
+            if (location.getStockDetails().containsKey(itemName)) {
                 // Remove the item from stockDetails
-                location.getStockDetails().remove(itemId);
+                location.getStockDetails().remove(itemName);
                 locationRepository.save(location); // Save the updated location
 
                 // Update the corresponding Item's location array
-                Optional<Item> dbItem = inventoryRepository.findByItemId(itemId);
+                Optional<Item> dbItem = inventoryRepository.findByName(itemName);
                 if (dbItem.isPresent()) {
                     Item item = dbItem.get();
 
@@ -135,10 +135,10 @@ public class LocationService {
                     }
                 }
 
-                data = "Item " + itemId + " successfully removed from location " + location.getName();
+                data = "Item " + itemName + " successfully removed from location " + location.getName();
                 return Utility.getResponse(new StatusEntry(ResponseEnum.UPDATED_SUCCESSFULLY), data);
             } else {
-                data = "Item " + itemId + " does not exist in location " + location.getName();
+                data = "Item " + itemName + " does not exist in location " + location.getName();
                 return Utility.getResponse(new StatusEntry(ResponseEnum.NO_DATA), data);
             }
         } else {

@@ -32,8 +32,8 @@ export class AddItemDialogComponent {
 
   constructForm() {
     this.addItemForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(5)]],
-      category: ['', [Validators.required, Validators.minLength(5)]],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      category: ['', [Validators.required, Validators.minLength(3)]],
     });
   }
 

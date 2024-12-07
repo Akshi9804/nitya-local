@@ -45,6 +45,12 @@ public class LocationController {
     public ResponseEntity<CommonResponse<String>> deleteSupplier(@PathVariable String id) {
         return new ResponseEntity<>(locationService.deleteLocation(id), HttpStatus.OK);
     }
+
+    @PutMapping("/delete-existing-item/{id}")
+    public ResponseEntity<CommonResponse<String>> deleteExistingItem(@RequestBody String itemName,@PathVariable String id) {
+        return new ResponseEntity<>(locationService.deleteItemFromLocation(id,itemName), HttpStatus.OK);
+    }
+
     @PutMapping("/add-existing-item")
     public ResponseEntity<CommonResponse<String>> addExistingItem(@RequestBody Map<String,String> inputMap) {
         return new ResponseEntity<>(locationService.addExistingItem(inputMap.get("locId"),inputMap.get("itemId")),HttpStatus.OK);

@@ -1,55 +1,35 @@
-<div class="supplier-panel" style="width: 80%;margin: auto;">
+<div class="supplier-panel">
+  <h2 class="heading">{{supplier?.supplierId}}</h2>
   <div class="supplier-details">
-    <h2 class="heading">{{supplier?.supplierId}}</h2>
-  <h3><b>Supplier Name:</b> {{supplier?.name}}</h3>
-  <h3><b>Email:</b> {{supplier?.email}}</h3>
-  <h3><b>Mobile:</b> {{supplier?.mobile}}</h3>
-  <h3><b>Address:</b> {{supplier?.address}}</h3>
-  <h3><b>Delivery In Days:</b> {{supplier?.deliveryInDays}}</h3>
+    <div>
+      <h3><b>Supplier Name:</b> {{supplier?.name}}</h3>
+      <h3><b>Email:</b> {{supplier?.email}}</h3>
+      <h3><b>Mobile:</b> {{supplier?.mobile}}</h3>
+      <h3><b>Address:</b> {{supplier?.address}}</h3>
+      <h3><b>Delivery In Days:</b> {{supplier?.deliveryInDays}}</h3>
+    </div>
+    <div>
+      <button class="delete-sup" (click)="openConfirmationDialogForDelete()">Delete</button>
+    </div>
+  
   </div>
   
-  <div class="items-section">
-    <h2 class="heading">Items provided by the supplier:</h2>
-    <p *ngIf="items.length==0">No items are provided</p>
+  <div class="items-header">
+    <h3>Items provided by the supplier</h3>
+    <p *ngIf="items.length===0">No items are provided</p>
+    <button (click)="navigateToAddItem()" *ngIf="isAdmin">Add New Item</button>
   </div>
-  
-  <div *ngIf="items.length>0">
-      <div class="mat-elevation-z8">
-          <table mat-table [dataSource]="dataSource">
-              <!-- Supplier ID column -->
-            <ng-container matColumnDef="itemId">
-              <th mat-header-cell *matHeaderCellDef> Item ID </th>
-              <td mat-cell *matCellDef="let element"> {{element.itemId}} </td>
-            </ng-container>
-        
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef> Name </th>
-              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-            </ng-container>
-        
-            <!-- Category Column -->
-            <ng-container matColumnDef="category">
-              <th mat-header-cell *matHeaderCellDef> Category </th>
-              <td mat-cell *matCellDef="let element"> {{element.category}} </td>
-            </ng-container>
-  
-            <!-- Delete Item Column -->
-            <ng-container matColumnDef="deleteItem">
-              <th mat-header-cell *matHeaderCellDef>  </th>
-              <td mat-cell *matCellDef="let element"><button mat-icon-button (click)="openConfirmationDialogForDelete(element.itemId)"><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon></button>
-              </td>
-            </ng-container>
-        
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-        </div>
+  <div class="items" *ngIf="items.length>0" >
+    
+    <div class="item"  *ngFor="let item of items">
+      <div>
+        <h2>{{item.name}}</h2>
+        <p>Category: {{item.category}}</p>
+      </div>
+      <div>
+        <button mat-icon-button (click)="openConfirmationDialogForDeleteItem(item.itemId)"><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon></button>
+      </div>
+    </div>
   </div>
-  
-  
-  
-  <button class="add-item" (click)="navigateToAddItem()">Add Item</button>
 </div>
-
 

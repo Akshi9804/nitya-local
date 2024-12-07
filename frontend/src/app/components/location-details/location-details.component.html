@@ -1,13 +1,28 @@
 <div class="location-details-panel">
   <div class="location-details">
-    <h1>{{location?.name}}</h1>
+    <div>
+      <h1>{{location?.name}}</h1>
     <p>{{location?.address}}</p>
+    </div>
+    <div>
+      <button class="delete-loc" (click)="openConfirmationDialogForDeleteLocation()">Delete</button>
+    </div>
   </div>
-  <button (click)="openAddExistingItem()" *ngIf="isAdmin">Add New Item</button>
-  <h3>Items in Stock</h3>
+  
+  
   <div class="items">
-    <li class="item" *ngFor="let item of itemsAtLocation">
-      <p>{{item.itemName}} : {{item.quantity}}</p>
-    </li>
+    <div class="items-header">
+      <h3>Items in Stock</h3>
+      <button (click)="openAddExistingItem()" *ngIf="isAdmin">Add New Item</button>
+    </div>
+    <div class="item" *ngFor="let item of itemsAtLocation">
+      <div>
+        <h2>{{item.itemName}}</h2>
+        <p>Quantity Available: {{item.quantity}}</p>
+      </div>
+      <div>
+        <button mat-icon-button (click)="openConfirmationDialogForDeleteItem(item.itemId)"><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon></button>
+      </div>
+    </div>
   </div>
 </div>

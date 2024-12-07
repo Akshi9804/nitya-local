@@ -13,7 +13,7 @@ export class CustomDatePipe implements PipeTransform {
 
     // Convert to IST (UTC+5:30)
     const offset = 5.5 * 60 * 60 * 1000; // 5.5 hours in milliseconds
-    const istDate = new Date(utcDate.getTime() + offset);
+    const istDate = new Date(utcDate.getTime());
 
     const hours = istDate.getHours().toString().padStart(2, '0');
     const minutes = istDate.getMinutes().toString().padStart(2, '0');

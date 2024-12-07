@@ -30,8 +30,7 @@ public class PurchaseOrderController {
 
     @PutMapping("/changeStatus")
     public ResponseEntity<CommonResponse<String>> getApprovedPurchaseOrders(@RequestBody Map<String,String> inputMap) {
-        String poId=inputMap.get("poId");
-        return new ResponseEntity<>(purchaseOrderService.changeApprovalStatus(poId), HttpStatus.OK);
+        return new ResponseEntity<>(purchaseOrderService.changeApprovalStatus(inputMap.get("poId"),inputMap.get("userId")), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
