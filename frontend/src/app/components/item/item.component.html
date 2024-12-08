@@ -17,12 +17,12 @@
           <button *ngIf="isAdmin" (click)="openConfirmationDialogForDelete()"><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon></button>
         </div>
       </div>
-      <div >
+      <div class="barcode">
         <div class="barcode-btn-container">
           <button class="barcode-btn" (click)="getBarcode()">Get Barcode</button>
         </div>
         
-        <div class="barcode" *ngIf="isBarcode">
+        <div class="barcode-img" *ngIf="isBarcode">
           <img [src]="barcodeUrl" alt="Barcode for the item" />
         </div>
       </div>

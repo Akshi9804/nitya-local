@@ -30,17 +30,16 @@
         transform: scale(1.02);
         opacity: 0.85;
       }
-      barcode-btn-container{
-        display: flex !important;
-        align-items: end;
-        margin-bottom: 20px;
-        .barcode-btn{
-          margin: auto;
-          display: flex;
-        }
-      }
-      .barcode{
-        padding: 30px;
+    }
+    barcode-btn-container{
+      display: flex;
+      margin-bottom: 20px;
+      justify-content: end;
+    }
+    .barcode{
+      padding: 30px;
+      img{
+        margin-top: 20px;
       }
     }
   }
