@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class OrderService {
 
-  private baseUrl = 'http://localhost:8090/order';
+  private baseUrl = 'https://inventorymanagementsystem-e8ga.onrender.com/order';
   constructor(private http:HttpClient) { }
 
   getOrders(): Observable<ApiResponse<Order>>{

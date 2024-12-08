@@ -9,7 +9,7 @@ import { Review } from '../interfaces/review.interface';
   providedIn: 'root'
 })
 export class ReviewService {
-  private baseUrl = 'http://localhost:8090/review';
+  private baseUrl = 'https://inventorymanagementsystem-e8ga.onrender.com/review';
 
   constructor(private http: HttpClient) { }
 
