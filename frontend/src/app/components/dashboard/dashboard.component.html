@@ -6,7 +6,7 @@
       </h1>
       <p>{{user.role | titlecase}} </p>
     </div>
-    
+
     <div class="btn-container">
       <button (click)="signOut()">Sign Out</button>
     </div>
@@ -19,7 +19,7 @@
       <div class="chart-item">
         <canvas id="chart_2" height="290px"></canvas>
       </div>
-  
+
       <div class="chart-item review_pane">
         <div class="reviews-header">
           <p>Comments</p>
@@ -31,31 +31,42 @@
           </div>
         </div>
       </div>
-  
-  
+
+
       <div class="chart-item alert_pane">
         <div class="alert_pane_head">
           <span class="material-symbols-outlined">
             notifications_active
-            </span>
+          </span>
           <mat-checkbox [(ngModel)]="showRead" (change)="filterNotifications()">Show Read Notifications</mat-checkbox>
         </div>
-  
+
         <div class="notifications" *ngFor="let notification of displayedNotifications">
           <div class="notification" [class.unread]="!notification.read">
             <div class="not-head">
               <h4>{{ notification.alertType }}</h4>
               <button (click)="markAsRead(notification.notificationId)" *ngIf="!notification.read">Mark as read</button>
             </div>
-            
+
             <p>{{ notification.message }}</p>
             <small>{{ notification.timeStamp | date: 'medium' }}</small>
           </div>
         </div>
-  
-  
+
+
       </div>
-      <div class="chart-item"></div>
+      <div class="chart-item ai_integrate">
+        <div class="option_selection_pane">
+          <select (change)="onSelectionChange($event)">
+            <option value="">-- Select an Option --</option>
+            <option value="orderSupplier">Order Supplier Analytics</option>
+            <!-- Add more options here -->
+          </select>
+        </div>
+        <p class="response">
+          {{ analysisResponse }}
+        </p>
+      </div>
     </div>
   </div>
   <div class="staff-dashboard" *ngIf="user.role==='staff'">
@@ -63,7 +74,7 @@
       <div class="notifications_pane_head">
         <span class="material-symbols-outlined">
           notifications_active
-          </span>
+        </span>
         <mat-checkbox [(ngModel)]="showRead" (change)="filterNotifications()">Show Read Notifications</mat-checkbox>
       </div>
 
@@ -71,9 +82,10 @@
         <div class="notification_staff" [class.unread]="!notification.read">
           <div class="not_head_staff">
             <h4>{{ notification.alertType }}</h4>
-            <button class="not_button-staff" (click)="markAsRead(notification.notificationId)" *ngIf="!notification.read">Mark as read</button>
+            <button class="not_button-staff" (click)="markAsRead(notification.notificationId)"
+              *ngIf="!notification.read">Mark as read</button>
           </div>
-          
+
           <p>{{ notification.message }}</p>
           <small>{{ notification.timeStamp | date: 'medium' }}</small>
         </div>
@@ -89,7 +101,7 @@
         <select id="location" [(ngModel)]="selectedLocation">
           <option *ngFor="let location of locations" [value]="location.name">{{ location.name }}</option>
         </select>
-    
+
         <textarea placeholder="Enter your feedback here..." [(ngModel)]="feedbackText"></textarea>
         <button (click)="submitFeedback()">Submit</button>
       </div>
@@ -97,5 +109,5 @@
         <p>{{ feedbackStatus }}</p>
       </div>
     </div>
-    
-</div>
+
+  </div>
