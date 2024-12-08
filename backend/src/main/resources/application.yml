@@ -4,7 +4,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://127.0.0.1:27017/inventoryManagementSystem
+      uri: mongodb+srv://akshitha:Akshitha04@cluster0.rdf62.mongodb.net/InventoryManagementSystem?retryWrites=true&w=majority&appName=Cluster0
 
 server:
   port: 8090

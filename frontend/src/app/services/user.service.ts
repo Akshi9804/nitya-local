@@ -8,7 +8,7 @@ import { ApiResponse } from '../interfaces/api-response.interface';
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = 'http://localhost:8090/user';
+  private baseUrl = 'https://inventorymanagementsystem-xkq7.onrender.com/user';
 
 
   constructor(private http:HttpClient){}
