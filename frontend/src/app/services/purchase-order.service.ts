@@ -9,7 +9,7 @@ import { PurchaseOrder } from '../interfaces/purchase-order.interface';
 })
 export class PurchaseOrderService {
 
-  private baseUrl = 'http://localhost:8090/purchase-order';
+  private baseUrl = 'https://inventorymanagementsystem-e8ga.onrender.com/purchase-order';
   constructor(private http:HttpClient) { }
 
   getPendingOrders():Observable<ApiResponse<PurchaseOrder>>{
