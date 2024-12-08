@@ -39,7 +39,7 @@
       justify-content: space-between;
       align-items: center;
       h3{
-          font-size: 1.7rem;
+          font-size: 1.6rem;
           margin-top: 20px;
           font-weight: bold;
       }
@@ -69,6 +69,10 @@
           margin-bottom: 10px;
           &:hover{
               transform: scale(1.01);
+          }
+          h2{
+            color: rgb(53,94,59);
+            font-weight: bold;
           }
       }
   }

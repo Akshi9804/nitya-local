@@ -4,8 +4,8 @@
       <li [class.active]="isActive('/task')">
         <a routerLink="/task">Dashboard</a>
       </li>
-      <li *ngIf="isAdmin" [class.active]="isActive('/task/suppliers')">
-        <a routerLink="/task/suppliers">Manage Suppliers</a>
+      <li [class.active]="isActive('/task/suppliers')">
+        <a routerLink="/task/suppliers">Suppliers</a>
       </li>
       <li [class.active]="isActive('/task/inventory')">
         <a routerLink="/task/inventory">Inventory</a>
@@ -17,12 +17,12 @@
         <a routerLink="/task/purchase-order">Purchase Orders</a>
       </li>
       <li [class.active]="isActive('/task/logs')" *ngIf="isAdmin">
-        <a routerLink="/task/logs">Logs</a>
+        <a routerLink="/task/logs">Stock Adjustment Logs</a>
       </li>
       <li [class.active]="isActive('/task/location')">
         <a routerLink="/task/location">Locations</a>
       </li>
-      <li [class.active]="isActive('/task/users')">
+      <li [class.active]="isActive('/task/users')" *ngIf="isAdmin">
         <a routerLink="/task/users">Manage Users</a>
       </li>
     </ul>

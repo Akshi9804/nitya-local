@@ -26,6 +26,7 @@ public class ItemService {
     private final CounterService counterService;
     private final SupplierRepository supplierRepository;
     private final LocationRepository locationRepository;
+    private final BarcodeService barcodeService;
 
     public CommonResponse<List<Item>> getAllItems() {
         List<Item> data = inventoryRepository.findAll();
@@ -47,7 +48,8 @@ public class ItemService {
             long sequence = counterService.generateSequence("itemId");
             item.setItemId("ITM-" + sequence);
 
-            // Save the item to the database
+            //create and add a barcode to the item
+            barcodeService.addBarcode(item.getItemId());
 
             // Set the current date-time for the lastUpdated field
             item.setLastUpdated(LocalDateTime.now());
@@ -79,7 +81,8 @@ public class ItemService {
             long sequence = counterService.generateSequence("itemId");
             item.setItemId("ITM-" + sequence);
 
-            // Save the item to the database
+            //create and add a barcode to the item
+            barcodeService.addBarcode(item.getItemId());
 
             // Set the current date-time for the lastUpdated field
             item.setLastUpdated(LocalDateTime.now());

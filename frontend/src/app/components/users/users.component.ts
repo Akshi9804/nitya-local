@@ -8,12 +8,20 @@ import { LogsService } from '../../services/logs.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SnackbarService } from '../../services/snackbar.service';
+import { CustomDatePipe } from '../../pipes/custom-date.pipe';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';  // Import MatDatepickerModule
+import { MatNativeDateModule } from '@angular/material/core'; 
 
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [MatTabsModule,CommonModule,MatTableModule,ReactiveFormsModule,FormsModule],
+  imports: [MatTabsModule,CommonModule,MatTableModule,ReactiveFormsModule,FormsModule,CustomDatePipe,
+    MatFormFieldModule,MatInputModule, MatDatepickerModule,
+    MatNativeDateModule,FormsModule
+  ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })
@@ -25,6 +33,10 @@ export class UsersComponent implements OnInit{
   displayedColumns: string[]=['userId','action', 'description', "timeStamp" ];
   roles: string[] = ['admin', 'staff']; // Available roles
   selectedRole: string = '';
+
+  // Filter properties
+  startDate: Date | null = null;
+  endDate: Date | null = null;
 
   constructor(private userService:UserService,private logsService:LogsService,private snackBar:SnackbarService,private cdr: ChangeDetectorRef){}
 
@@ -151,5 +163,18 @@ export class UsersComponent implements OnInit{
         console.error('Error updating data:', error);
       }
     })
+  }
+  filterByDateRange(): void {
+    let filteredOrders = this.userActivityLogs;
+
+    if (this.startDate && this.endDate) {
+      filteredOrders = filteredOrders.filter((order) => {
+        const orderDate = new Date(order.timeStamp);
+        return orderDate >= this.startDate && orderDate <= this.endDate;
+      });
+    }
+
+    // Update the data source to reflect the filtered results
+    this.dataSource.data = filteredOrders;
   }
 }

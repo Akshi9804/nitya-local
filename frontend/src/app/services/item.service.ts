@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ApiResponse } from '../interfaces/api-response.interface';
 import { Observable } from 'rxjs';
 import { Item } from '../interfaces/item.interface';
+import { Barcode } from '../interfaces/barcode.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,11 @@ export class ItemService {
     return this.http.delete<ApiResponse<String>>(`${this.baseUrl}/delete-item/${itemId}`)
   }
 
-  addItem(item: Item, supplierId: string): Observable<ApiResponse<Item>> {
+  addItem(item: Item): Observable<ApiResponse<Item>> {
     return this.http.post<ApiResponse<Item>>(`${this.baseUrl}/add-item`,item);
+  }
+
+  getBarcode(itemId:string):Observable<ApiResponse<Barcode>> {
+    return this.http.get<ApiResponse<Barcode>>(`http://localhost:8090/barcode/${itemId}`);
   }
 }

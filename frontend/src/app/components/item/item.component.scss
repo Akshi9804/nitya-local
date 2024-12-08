@@ -1,68 +1,68 @@
-.item-details {
-    margin: 0 auto; 
-    max-width: 600px; 
-    padding: 20px;
-    background-color: #ffffff; 
-    border-radius: 8px; 
-    border: 1px solid #e0e0e0;
-  
-    h2 {
-      font-size: 28px;
-      color: rgb(53,94,59); 
-      text-align: center; 
-      font-weight: 600; 
-      margin-bottom: 20px; 
+.item-details{
+  width: 80%;
+  margin: auto;
+  .header{
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    h2{
+      font-size: 2rem;
+      color: rgb(53,94,59);
+      font-weight: bold;
     }
+  }
   
-    h3 {
-      display: flex;
-      justify-content: space-between;
-      font-size: 18px; 
-      margin: 10px 0; 
-      padding: 8px 0;
-      border-bottom: 1px solid #f0f0f0;
-  
-      b {
-        flex: 0 0 150px; 
-        color: #333; 
-        font-weight: 600; 
+  .data{
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0px 0px 3px 1px rgb(200,200,200);
+    padding: 30px;
+    height: 100%;
+    button{
+      background-color: black;
+      color: white;
+      padding: 8px 10px;
+      font-weight: bold;
+      border: transparent;
+      border-radius: 5px;
+      margin-right: 10px;
+      &:hover{
+        transform: scale(1.02);
+        opacity: 0.85;
       }
-  
-      span {
-        flex: 1; 
-        color: #555; 
-        text-align: left; 
+      barcode-btn-container{
+        display: flex !important;
+        align-items: end;
+        margin-bottom: 20px;
+        .barcode-btn{
+          margin: auto;
+          display: flex;
+        }
       }
-  
-      &:hover {
-        background-color: #f5f5f5; // Light grey background
-        transition: background-color 0.3s ease; // Smooth transition
-        border-radius: 4px; // Add slight rounding on hover
+      .barcode{
+        padding: 30px;
       }
     }
-  
-    button {
+  }
+
+  .locations{
+    margin-top: 20px;
+    h3{
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+    .loc{
+      box-shadow: 0px 0px 3px 1px rgb(200,200,200);
+      padding: 20px;
       background-color: rgb(53,94,59);
-      color: white; 
-      border: none;
-      border-radius: 4px;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: 500;
-      text-transform: uppercase;
-      cursor: pointer;
-      margin-top: 20px;
-      margin-right: 10px; 
-      transition: background-color 0.3s ease;
-  
-      &:hover {
-        background-color: rgb(53,94,59,0.8);
-      }
-  
-      &:focus {
-        outline: none;
-        box-shadow: 0 0 0 2px rgba(200,200,200);
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      &:hover{
+        transform: scale(1.02);
       }
     }
   }
   
+}

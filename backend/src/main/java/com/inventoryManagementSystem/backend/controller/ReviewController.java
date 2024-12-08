@@ -23,7 +23,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<CommonResponse<String>> addReview(@RequestBody Review review) {
+    public ResponseEntity<CommonResponse<String>> addReview(@RequestBody String review) {
         return new ResponseEntity<>(reviewService.addReview(review), HttpStatus.OK);
     }
 }

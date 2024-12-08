@@ -82,6 +82,14 @@ public class OrderService {
         return Utility.getResponse(new StatusEntry(ResponseEnum.INSERTED_SUCCESSFULLY), data);
     }
 
+    public CommonResponse<List<Order>> getOrdersByUserId(String userId) {
+        List<Order> data = orderRepository.findByUserId(userId); // Fetch orders by userId
+        if (data.isEmpty()) {
+            return Utility.getResponse(new StatusEntry(ResponseEnum.NO_DATA), "No orders found for this user.");
+        }
+        return Utility.getResponse(new StatusEntry(ResponseEnum.RETRIEVED_SUCCESSFULLY), data);
+    }
+
     public CommonResponse<String> addIncomingOrder(Order order,String user,String role) {
             long orderSequence = counterService.generateSequence("orderId");
             order.setOrderId("ODR-" + orderSequence);

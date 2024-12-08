@@ -64,17 +64,17 @@
     <div class="field">
       <label for="locations">Locations</label>
       <div formArrayName="availableLocations">
-        <div *ngFor="let locationCtrl of locationsFormArray.controls; let i = index" class="location-row">
+        <div class="location-select" *ngFor="let locationCtrl of locationsFormArray.controls; let i = index" class="location-row">
           <select [formControlName]="i">
             <option value="" disabled>Select Location</option>
             <option *ngFor="let location of locations" [value]="location.locId">
               {{ location.name }}
             </option>
           </select>
-          <button type="button" (click)="removeLocation(i)">Remove</button>
+          <button class="remove-loc-btn" type="button" (click)="removeLocation(i)">Remove</button>
         </div>
       </div>
-      <button type="button" (click)="addLocation()">Add Location</button>
+      <button class="add-loc-btn" type="button" (click)="addLocation()">Add Location</button>
     </div>
 
     <!-- Reorder Level -->

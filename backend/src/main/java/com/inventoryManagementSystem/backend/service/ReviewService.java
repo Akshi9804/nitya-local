@@ -22,7 +22,9 @@ public class ReviewService {
         return Utility.getResponse(new StatusEntry(ResponseEnum.RETRIEVED_SUCCESSFULLY), reviews);
     }
 
-    public CommonResponse<String> addReview(Review review) {
+    public CommonResponse<String> addReview(String message) {
+        Review review = new Review();
+
         reviewRepository.save(review);
         return Utility.getResponse(new StatusEntry(ResponseEnum.INSERTED_SUCCESSFULLY), "Added successfully");
     }

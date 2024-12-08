@@ -80,64 +80,80 @@
               
         </mat-tab>
         <mat-tab label="View Orders"> 
-            <div class="mat-elevation-z8" style="margin-top: 30px;">
-                <table mat-table [dataSource]="dataSource">
-                    <!-- Order ID column -->
-                  <ng-container matColumnDef="orderId">
-                    <th mat-header-cell *matHeaderCellDef> Order ID </th>
-                    <td mat-cell *matCellDef="let element"> {{element.orderId}} </td>
-                  </ng-container>
-              
-                  <!-- Supplier ID Column -->
-                  <ng-container matColumnDef="supplierId">
-                    <th mat-header-cell *matHeaderCellDef> Supplier ID </th>
-                    <td mat-cell *matCellDef="let element"> {{element.supplierId}} </td>
-                  </ng-container>
-              
-                  <!-- Item ID Column -->
-                  <ng-container matColumnDef="itemId">
-                    <th mat-header-cell *matHeaderCellDef> Item ID </th>
-                    <td mat-cell *matCellDef="let element"> {{element.itemId}} </td>
-                  </ng-container>
+          <div class="date-range-filter" *ngIf="orders.length>0">
+            <mat-form-field appearance="fill">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="startDate" (dateChange)="filterByDateRange()">
+              <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #startDatePicker></mat-datepicker>
+            </mat-form-field>
+        
+            <mat-form-field appearance="fill">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="endDate" (dateChange)="filterByDateRange()">
+              <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #endDatePicker></mat-datepicker>
+            </mat-form-field>
+        
+          </div>
+            <div class="tabular-data">
+              <table mat-table [dataSource]="dataSource">
+                <!-- Order ID column -->
+              <ng-container matColumnDef="orderId">
+                <th mat-header-cell *matHeaderCellDef> Order ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.orderId}} </td>
+              </ng-container>
+          
+              <!-- Supplier ID Column -->
+              <ng-container matColumnDef="supplierId">
+                <th mat-header-cell *matHeaderCellDef> Supplier ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.supplierId}} </td>
+              </ng-container>
+          
+              <!-- Item ID Column -->
+              <ng-container matColumnDef="itemId">
+                <th mat-header-cell *matHeaderCellDef> Item ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.itemId}} </td>
+              </ng-container>
 
-                  <!--Order Type Column -->
-                  <ng-container matColumnDef="orderType">
-                    <th mat-header-cell *matHeaderCellDef> Order Type </th>
-                    <td mat-cell *matCellDef="let element"> {{element.orderType}} </td>
-                  </ng-container>
-            
-                  <!-- Quantity Column -->
-                  <ng-container matColumnDef="quantity">
-                    <th mat-header-cell *matHeaderCellDef> Quantity </th>
-                    <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
-                  </ng-container>
-              
-                  <!-- Order Date Column -->
-                  <ng-container matColumnDef="orderDate">
-                    <th mat-header-cell *matHeaderCellDef> Order Date </th>
-                    <td mat-cell *matCellDef="let element"> {{element.orderDate}} </td>
-                  </ng-container>
-            
-                  <!-- Delivery Date Column -->
-                  <ng-container matColumnDef="deliveryDate">
-                    <th mat-header-cell *matHeaderCellDef> Delivery Date </th>
-                    <td mat-cell *matCellDef="let element"> {{element.deliveryDate}} </td>
-                  </ng-container>
-            
-                  <!--Status Column -->
-                  <ng-container matColumnDef="status">
-                    <th mat-header-cell *matHeaderCellDef> Status </th>
-                    <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-                  </ng-container>
-              
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
-              
-                <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                               showFirstLastButtons
-                               aria-label="Select page of periodic elements">
-                </mat-paginator>
+              <!--Order Type Column -->
+              <ng-container matColumnDef="orderType">
+                <th mat-header-cell *matHeaderCellDef> Order Type </th>
+                <td mat-cell *matCellDef="let element"> {{element.orderType}} </td>
+              </ng-container>
+        
+              <!-- Quantity Column -->
+              <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+              </ng-container>
+          
+              <!-- Order Date Column -->
+              <ng-container matColumnDef="orderDate">
+                <th mat-header-cell *matHeaderCellDef> Order Date </th>
+                <td mat-cell *matCellDef="let element"> {{element.orderDate | customDate}} </td>
+              </ng-container>
+        
+              <!-- Delivery Date Column -->
+              <ng-container matColumnDef="deliveryDate">
+                <th mat-header-cell *matHeaderCellDef> Delivery Date </th>
+                <td mat-cell *matCellDef="let element"> {{element.deliveryDate | customDate}} </td>
+              </ng-container>
+        
+              <!--Status Column -->
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+              </ng-container>
+          
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                           showFirstLastButtons
+                           aria-label="Select page of periodic elements">
+            </mat-paginator>
               </div>
         </mat-tab>
       </mat-tab-group>

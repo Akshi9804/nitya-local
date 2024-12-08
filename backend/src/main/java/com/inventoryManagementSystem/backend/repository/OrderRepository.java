@@ -15,6 +15,8 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     public Optional<Order> findByOrderId(String orderId);
     List<Order> findByStatusAndDeliveryDateNotNull(String status);
 
+    List<Order> findByUserId(String userId);
+
     @Query("{ 'status': 'Pending', 'deliveryDate': { $lte: ?0 } }")
     List<Order> findOrdersWithPastDeliveryDate(LocalDateTime currentTime);
 }
