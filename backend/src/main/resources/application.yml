@@ -6,7 +6,10 @@ spring:
     mongodb:
       uri: mongodb://127.0.0.1:27017/inventoryManagementSystem
 
-
 server:
   port: 8090
 
+cloudflare:
+  api:
+    url: https://api.cloudflare.com/client/v4/accounts/ddadeabed2494154764db552710a34c2/ai/run/@cf/meta/llama-3.1-8b-instruct
+    key: 8_HvhWtvvgjyrt4qb1IsJtIatochSH_QYtefqsv4

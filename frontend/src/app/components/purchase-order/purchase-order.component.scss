@@ -80,39 +80,37 @@
     }
   }
 
-  mat-card-actions {
-    display: flex;
-    justify-content: space-between; /* Space out the buttons */
-    padding: 8px 16px;
-  }
-  
-  button {
-    
-    text-transform: uppercase;
-    border-radius: 4px;
-    transition: all 0.2s ease-in-out;
-    
-  }
-  
-  button:hover {
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2); /* Add hover effect */
-  }
-  .edit-button{
-    background-color: rgb(213, 213, 35);
-  }
-  .approve-button{
-    background-color: green;
-    color: white !important;
-  }
-  .decline-button{
-    background-color: rgb(205, 0, 0);
-    color: white !important;
-  }
-
- 
-  
+mat-card-actions {
+  display: flex;
+  justify-content: space-between; /* Space out the buttons */
+  padding: 8px 16px;
 }
 
-  
-  
-  
+button {
+  text-transform: uppercase;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2); /* Add hover effect */
+}
+.edit-button {
+  background-color: rgb(213, 213, 35);
+}
+.approve-button {
+  background-color: green;
+  color: white !important;
+}
+.decline-button {
+  background-color: rgb(205, 0, 0);
+  color: white !important;
+}
+
+::ng-deep .mat-mdc-tab .mdc-tab-indicator__content--underline {
+  border-color: rgb(53, 94, 59) !important;
+}
+
+::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: black !important;
+}
