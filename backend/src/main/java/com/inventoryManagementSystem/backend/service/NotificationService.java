@@ -68,9 +68,7 @@ public class NotificationService {
                 .filter(item -> item.getQuantity() < item.getReorderLevel() && !item.isNotificationSent())
                 .toList();
 
-        // Check if there are items with low stock
         if (!itemsWithLowStock.isEmpty()) {
-            // Fetch all admin users
             List<User> admins = userRepository.findByRole("admin");
 
             // Create and save notifications for all low-stock items
@@ -79,14 +77,7 @@ public class NotificationService {
 
                 // Create notifications for each admin
                 for (User admin : admins) {
-                    Notification notification = new Notification();
-                    notification.setUserId(admin.getUserId());
-                    notification.setMessage(message);
-                    notification.setAlertType("Low Stock Alert");
-                    notification.setTimeStamp(LocalDateTime.now());
-
-                    // Save the notification
-                    notificationRepository.save(notification);
+                    addNotification(admin.getUserId(),message,"Low Stock Alert");
                 }
 
                 // Mark the item as notified

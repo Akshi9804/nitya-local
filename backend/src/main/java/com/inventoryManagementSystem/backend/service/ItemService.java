@@ -77,24 +77,40 @@ public class ItemService {
             return Utility.getResponse(new StatusEntry(ResponseEnum.ALREADY_EXISTS), errorMessage);
         }
 
-            // Generate sequence for the new item
-            long sequence = counterService.generateSequence("itemId");
-            item.setItemId("ITM-" + sequence);
+        // Generate sequence for the new item
+        long sequence = counterService.generateSequence("itemId");
+        item.setItemId("ITM-" + sequence);
 
-            //create and add a barcode to the item
-            barcodeService.addBarcode(item.getItemId());
+        // Create and add a barcode to the item
+        barcodeService.addBarcode(item.getItemId());
 
-            // Set the current date-time for the lastUpdated field
-            item.setLastUpdated(LocalDateTime.now());
+        // Set the current date-time for the lastUpdated field
+        item.setLastUpdated(LocalDateTime.now());
+
+        // Save the item to the inventory
         inventoryRepository.save(item);
 
+        // Add the item with quantity 0 to the stock details of each available location
+        for (String loc : item.getAvailableLocations()) {
+            Optional<Location> locationOptional = locationRepository.findByLocId(loc); // Assuming loc is locationId
+            if (locationOptional.isPresent()) {
+                Location location = locationOptional.get();
+                Map<String, Integer> stockDetails = location.getStockDetails();
 
-            // Prepare response
-            String data = item.getName() + " added successfully";
-            return Utility.getResponse(new StatusEntry(ResponseEnum.INSERTED_SUCCESSFULLY), data);
+                // Add stock entry for this item at the location
+                if (!stockDetails.containsKey(item.getItemId())) {
+                    stockDetails.put(item.getItemId(), 0); // itemId, quantity: 0
+                    location.setStockDetails(stockDetails); // Update the stock details for the location
+                    locationRepository.save(location); // Save the updated location
+                }
+            }
+        }
 
-
+        // Prepare response
+        String data = item.getName() + " added successfully";
+        return Utility.getResponse(new StatusEntry(ResponseEnum.INSERTED_SUCCESSFULLY), data);
     }
+
 
     public CommonResponse<List<Item>> findItemsByIDs(List<String> ids){
         List<Item> data = inventoryRepository.findAllByItemIdIn(ids);

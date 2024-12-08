@@ -16,11 +16,12 @@
   
   <div class="items-header">
     <h3>Items provided by the supplier</h3>
-    <p *ngIf="items.length===0">No items are provided</p>
     <button (click)="navigateToAddItem()" *ngIf="isAdmin">Add New Item</button>
   </div>
+  <div class="no-data">
+    <p *ngIf="items.length===0">No items are provided</p>
+  </div>
   <div class="items" *ngIf="items.length>0" >
-    
     <div class="item"  *ngFor="let item of items">
       <div>
         <h2>{{item.name}}</h2>

@@ -17,7 +17,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-supplier',
   standalone: true,
-  imports: [MatDialogModule,CommonModule,MatPaginator,MatTableModule,MatIconModule,MatButtonModule],
+  imports: [MatDialogModule,CommonModule,MatTableModule,MatIconModule,MatButtonModule],
   templateUrl: './supplier.component.html',
   styleUrl: './supplier.component.scss'
 })
@@ -50,8 +50,14 @@ export class SupplierComponent implements OnInit{
 
   deleteSupplier(){
     this.supplierService.deleteSupplier(this.supplier.supplierId).subscribe({
-      next: (response) => {console.log('Delete successful:', response);
-        this.router.navigate(["/task/suppliers"])
+      next: (response) => {
+        if(response.statusEntry.statusCode===1004)
+        {
+          console.log('Delete successful:', response);
+          this.router.navigate(["/task/suppliers"]);
+          this.snackbarService.showSnackbar("Supplier deleted successfully");
+        }
+        
       },
       error: (error) => console.error('Delete error:', error),
     });
