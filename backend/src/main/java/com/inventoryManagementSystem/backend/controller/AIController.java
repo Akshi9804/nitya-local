@@ -5,6 +5,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class AIController {
