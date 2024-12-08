@@ -30,7 +30,7 @@
     </mat-tab>
     <mat-tab label="Staff">
       <div class="content users">
-        <p class="no-data" *ngIf="staff.length===0"> There are no staff</p>
+        <p class="no-data" *ngIf="staff.length===0">No staff exist</p>
         <div class="cards-container" *ngIf="staff.length>0">
           <div class="card" *ngFor="let user of staff">
             <div class="card-header">

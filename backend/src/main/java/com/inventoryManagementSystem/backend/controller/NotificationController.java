@@ -2,7 +2,6 @@ package com.inventoryManagementSystem.backend.controller;
 
 
 import com.inventoryManagementSystem.backend.entity.Notification;
-import com.inventoryManagementSystem.backend.entity.Order;
 import com.inventoryManagementSystem.backend.entry.CommonResponse;
 import com.inventoryManagementSystem.backend.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ public class NotificationController {
 
     @PostMapping
     public ResponseEntity<CommonResponse<List<Notification>>> getNotificationsByUserId(@RequestBody String userId) {
-        System.out.println(userId);
         return new ResponseEntity<>(notificationService.getNotificationsByUserId(userId), HttpStatus.OK);
     }
 

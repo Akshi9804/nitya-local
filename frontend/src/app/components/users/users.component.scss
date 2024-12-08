@@ -10,6 +10,8 @@
             padding-top: 30px;
             padding: 10px;
             padding-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
             .card1{
                 width: 30%;
             }
@@ -18,6 +20,7 @@
                 width: 80%;
                 padding: 20px;
                 border-radius: 5px;
+                margin-top: 10px;
                 display: flex;
             justify-content: space-between;
                 &:hover{

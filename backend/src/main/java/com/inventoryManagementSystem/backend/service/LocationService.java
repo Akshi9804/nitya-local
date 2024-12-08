@@ -6,7 +6,6 @@ import com.inventoryManagementSystem.backend.entry.ResponseEnum;
 import com.inventoryManagementSystem.backend.entry.StatusEntry;
 import com.inventoryManagementSystem.backend.repository.InventoryRepository;
 import com.inventoryManagementSystem.backend.repository.LocationRepository;
-import com.inventoryManagementSystem.backend.repository.StockAdjustmentLogRepository;
 import com.inventoryManagementSystem.backend.repository.StockTransferLogRepository;
 import com.inventoryManagementSystem.backend.utility.Utility;
 import lombok.RequiredArgsConstructor;
@@ -162,11 +161,6 @@ public class LocationService {
 
     public CommonResponse<List<Location>> getAllLocationByIds(String[] ids) {
         System.out.println(ids);
-//        if (ids == null || ids.length == 0) {
-//            String errorMessage = "No IDs provided";
-//            return Utility.getResponse(new StatusEntry(ResponseEnum.NO_DATA), errorMessage);
-//        }
-            // Fetch locations using the repository
             List<Location> locations = locationRepository.findByLocIdIn(Arrays.asList(ids));
 
             if (locations.isEmpty()) {
@@ -248,8 +242,6 @@ public class LocationService {
                 locationRepository.save(toLocation);
             });
             stockTransferLogRepository.saveAll(pendingTransfers);
-
-            System.out.println("Updated " + pendingTransfers.size() + " stock transfer logs to 'Done'.");
         }
     }
 

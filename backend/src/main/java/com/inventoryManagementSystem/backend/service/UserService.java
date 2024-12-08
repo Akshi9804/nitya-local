@@ -1,7 +1,6 @@
 package com.inventoryManagementSystem.backend.service;
 
 
-import com.inventoryManagementSystem.backend.entity.Supplier;
 import com.inventoryManagementSystem.backend.entity.User;
 import com.inventoryManagementSystem.backend.entry.CommonResponse;
 import com.inventoryManagementSystem.backend.entry.ResponseEnum;
@@ -29,11 +28,7 @@ public class UserService {
 
     public CommonResponse<String> signUpUser(User user) {
         boolean exists1 = userRepository.existsByName(user.getName());
-        System.out.println(user.getName());
         boolean exists2 = userRepository.existsByEmail(user.getEmail());
-        System.out.println(user.getEmail());
-        System.out.println(user.getPassword());
-        System.out.println(user);
         if (exists1) {
             String errorMessage = "User with name '" + user.getName() + "' already exists";
             return Utility.getResponse(new StatusEntry(ResponseEnum.ALREADY_EXISTS), errorMessage);

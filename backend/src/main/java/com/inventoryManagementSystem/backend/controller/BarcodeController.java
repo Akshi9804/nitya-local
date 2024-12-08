@@ -1,7 +1,6 @@
 package com.inventoryManagementSystem.backend.controller;
 
 import com.inventoryManagementSystem.backend.entity.Barcode;
-import com.inventoryManagementSystem.backend.entity.Item;
 import com.inventoryManagementSystem.backend.entry.CommonResponse;
 import com.inventoryManagementSystem.backend.service.BarcodeService;
 import lombok.RequiredArgsConstructor;

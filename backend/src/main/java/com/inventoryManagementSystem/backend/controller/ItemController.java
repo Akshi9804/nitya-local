@@ -2,7 +2,6 @@ package com.inventoryManagementSystem.backend.controller;
 
 
 import com.inventoryManagementSystem.backend.entity.Item;
-import com.inventoryManagementSystem.backend.entity.Supplier;
 import com.inventoryManagementSystem.backend.entry.AddItemRequest;
 import com.inventoryManagementSystem.backend.entry.CommonResponse;
 import com.inventoryManagementSystem.backend.service.ItemService;

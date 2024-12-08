@@ -24,12 +24,18 @@
         <div class="reviews-header">
           <p>Comments</p>
         </div>
-        <div class="reviews" *ngFor="let review of reviews">
-          <div class="review-card">
-            <div class="review-user">{{ review.locName }}</div>
-            <div class="review-text">{{ review.review }}</div>
+        <div class="no-data" *ngIf="displayedNotifications.length==0">
+          <p>No reviews available</p>
+        </div>
+        <div *ngIf="reviews.length>0">
+          <div class="reviews" *ngFor="let review of reviews">
+            <div class="review-card">
+              <div class="review-user">{{ review.locName }}</div>
+              <div class="review-text">{{ review.review }}</div>
+            </div>
           </div>
         </div>
+        
       </div>
 
 
@@ -40,20 +46,24 @@
           </span>
           <mat-checkbox [(ngModel)]="showRead" (change)="filterNotifications()">Show Read Notifications</mat-checkbox>
         </div>
-
-        <div class="notifications" *ngFor="let notification of displayedNotifications">
-          <div class="notification" [class.unread]="!notification.read">
-            <div class="not-head">
-              <h4>{{ notification.alertType }}</h4>
-              <button (click)="markAsRead(notification.notificationId)" *ngIf="!notification.read">Mark as read</button>
+        <div class="no-data">
+          <p *ngIf="displayedNotifications.length==0">No notifications</p>
+        </div>
+        
+        <div *ngIf="displayedNotifications.length>0">
+          <div class="notifications" *ngFor="let notification of displayedNotifications">
+            <div class="notification" [class.unread]="!notification.read">
+              <div class="not-head">
+                <h4>{{ notification.alertType }}</h4>
+                <button (click)="markAsRead(notification.notificationId)" *ngIf="!notification.read">Mark as read</button>
+              </div>
+  
+              <p>{{ notification.message }}</p>
+              <small>{{ notification.timeStamp | date: 'medium' }}</small>
             </div>
-
-            <p>{{ notification.message }}</p>
-            <small>{{ notification.timeStamp | date: 'medium' }}</small>
           </div>
         </div>
-
-
+        
       </div>
       <div class="chart-item ai_integrate">
         <div class="option_selection_pane">
@@ -77,19 +87,24 @@
         </span>
         <mat-checkbox [(ngModel)]="showRead" (change)="filterNotifications()">Show Read Notifications</mat-checkbox>
       </div>
-
-      <div class="notifications_staff" *ngFor="let notification of displayedNotifications">
-        <div class="notification_staff" [class.unread]="!notification.read">
-          <div class="not_head_staff">
-            <h4>{{ notification.alertType }}</h4>
-            <button class="not_button-staff" (click)="markAsRead(notification.notificationId)"
-              *ngIf="!notification.read">Mark as read</button>
+      <div class="no-data">
+        <p *ngIf="displayedNotifications.length==0">No notifications</p>
+      </div>
+      <div *ngIf="displayedNotifications.length>0">
+        <div class="notifications_staff" *ngFor="let notification of displayedNotifications">
+          <div class="notification_staff" [class.unread]="!notification.read">
+            <div class="not_head_staff">
+              <h4>{{ notification.alertType }}</h4>
+              <button class="not_button-staff" (click)="markAsRead(notification.notificationId)"
+                *ngIf="!notification.read">Mark as read</button>
+            </div>
+  
+            <p>{{ notification.message }}</p>
+            <small>{{ notification.timeStamp | date: 'medium' }}</small>
           </div>
-
-          <p>{{ notification.message }}</p>
-          <small>{{ notification.timeStamp | date: 'medium' }}</small>
         </div>
       </div>
+      
     </div>
 
     <div class=" feedback_pane">

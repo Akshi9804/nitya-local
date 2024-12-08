@@ -95,7 +95,6 @@ public class OrderService {
             order.setOrderId("ODR-" + orderSequence);
             order.setStatus("Pending");
             order.setUserId(user);
-        System.out.println(order.getLocId());
             Optional<Item> item = inventoryRepository.findByItemId(order.getItemId());
             Optional<Supplier> supplier = supplierRepository.findBySupplierId(order.getSupplierId());
 
@@ -147,40 +146,39 @@ public class OrderService {
             // Update the status of these orders to "Done"
             pendingOrders.forEach(order -> {
                 Optional<Item> item = inventoryRepository.findByItemId(order.getItemId());
-                System.out.println(order.getLocId());
-                System.out.println(item.get().getName());
                 Optional<Location> location = locationRepository.findByLocId(order.getLocId());
-                System.out.println(location.get().getName());
                 if(item.isPresent() && location.isPresent())
                 {
                     item.get().setQuantity(item.get().getQuantity()+order.getQuantity());
                     item.get().setLastUpdated(LocalDateTime.now());
                     order.setStatus("Done");
                     inventoryRepository.save(item.get());
+                    if(location.isPresent()){
+                        location.get().getStockDetails().put(order.getItemId(),location.get().getStockDetails().get(order.getItemId())+order.getQuantity());
+                        locationRepository.save(location.get());
+                        //add the change to the log
+                        StockAdjustmentLog log = new StockAdjustmentLog();
+                        long logSequence = counterService.generateSequence("stockLogId");
+                        log.setLogId("STOCLG-" + logSequence);
+                        log.setItemId(order.getItemId());
+                        log.setChangeType("Quantity increased");
+                        log.setQuantity(order.getQuantity());
+                        log.setReason("Incoming order");
+                        log.setTimeStamp(LocalDateTime.now());
+                        stockAdjustmentLogRepository.save(log);
 
-                    location.get().getStockDetails().put(order.getItemId(),location.get().getStockDetails().get(order.getItemId())+order.getQuantity());
-                    locationRepository.save(location.get());
-                    //add the change to the log
-                    StockAdjustmentLog log = new StockAdjustmentLog();
-                    long logSequence = counterService.generateSequence("stockLogId");
-                    log.setLogId("STOCLG-" + logSequence);
-                    log.setItemId(order.getItemId());
-                    log.setChangeType("Quantity increased");
-                    log.setQuantity(order.getQuantity());
-                    log.setReason("Incoming order");
-                    log.setTimeStamp(LocalDateTime.now());
-                    stockAdjustmentLogRepository.save(log);
+                        //creating the notifications
+                        List<User> users = userRepository.findAll();
+                        String message = "Item " + item.get().getName() + " has arrived to Location" + location.get().getName();
 
-                    //creating the notifications
-                    List<User> users = userRepository.findAll();
-                    String message = "Item " + item.get().getName() + " has arrived to Location" + location.get().getName();
+                        // Create and save notifications for each admin
+                        for (User user : users) {
+                            notificationService.addNotification(user.getUserId(),message,"Item Arrival");
+                        }
 
-                    // Create and save notifications for each admin
-                    for (User user : users) {
-                        notificationService.addNotification(user.getUserId(),message,"Item Arrival");
+                        System.out.println("Notification sent to users for item: " + item.get().getName());
                     }
 
-                    System.out.println("Notification sent to users for item: " + item.get().getName());
 
                 }
             });
