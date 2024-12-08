@@ -20,5 +20,7 @@ export class OrderService {
     return this.http.post<ApiResponse<String>>(`${this.baseUrl}/${userId}?role=${role}`,order);
   }
 
-  
+  getOrdersByUser(userId:string): Observable<ApiResponse<Order>>{
+    return this.http.get<ApiResponse<Order>>(`${this.baseUrl}/${userId}`);
+  }
 }

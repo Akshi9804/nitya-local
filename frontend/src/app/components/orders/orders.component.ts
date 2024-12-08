@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {MatTabsModule} from '@angular/material/tabs';
-import { Router } from '@angular/router';
 import { SupplierService } from '../../services/supplier.service';
 import { ItemService } from '../../services/item.service';
 import { Supplier } from '../../interfaces/supplierInterface.interface';
@@ -11,17 +10,24 @@ import { OrderService } from '../../services/order.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { Order } from '../../interfaces/order.interface';
-import { UserService } from '../../services/user.service';
 import { LocationService } from '../../services/location.service';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../interfaces/user.interface';
+import { CustomDatePipe } from '../../pipes/custom-date.pipe';
+import { SnackbarService } from '../../services/snackbar.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';  // Import MatDatepickerModule
+import { MatNativeDateModule } from '@angular/material/core'; 
 
 
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [MatTabsModule,CommonModule,ReactiveFormsModule,MatTableModule, MatPaginatorModule],
+  imports: [MatTabsModule,CommonModule,ReactiveFormsModule,MatTableModule, MatPaginatorModule,CustomDatePipe,
+    MatFormFieldModule,MatInputModule, MatDatepickerModule,
+    MatNativeDateModule,FormsModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'
 })
@@ -37,6 +43,11 @@ export class OrdersComponent implements OnInit, AfterViewInit{
   availableLocations: any[] = []; 
   item:Item;
   user:User;
+
+  // Filter properties
+  startDate: Date | null = null;
+  endDate: Date | null = null;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
@@ -45,7 +56,8 @@ export class OrdersComponent implements OnInit, AfterViewInit{
     private itemService: ItemService,
     private orderService:OrderService,
     private locationService:LocationService,
-    private authService:AuthService
+    private authService:AuthService,
+    private snackbar:SnackbarService
   ) {
     this.constructForm();
   }
@@ -85,26 +97,20 @@ export class OrdersComponent implements OnInit, AfterViewInit{
 
   constructForm() {
     this.addOrderForm = this.formBuilder.group({
-      supplierId: ['', Validators.required], // Supplier dropdown
-      itemId: ['', Validators.required],    // Item dropdown
+      supplierId: ['', Validators.required], 
+      itemId: ['', Validators.required],   
       orderType: ['', Validators.required],
       locId:['', Validators.required],
       quantity: ['', [Validators.required, Validators.min(1)]], // Quantity field
     });
   }
 
-  /**
-   * Custom validator to ensure at least one order type is selected.
-   */
   validateOrderType(group: FormGroup) {
     const incoming = group.get('incoming')?.value;
     const outgoing = group.get('outgoing')?.value;
     return incoming || outgoing ? null : { required: true };
   }
 
-  /**
-   * Fetches the list of suppliers.
-   */
   fetchSuppliers() {
     this.supplierService.getSuppliers().subscribe({
       next: (response) => {
@@ -116,10 +122,6 @@ export class OrdersComponent implements OnInit, AfterViewInit{
     });
   }
 
-  /**
-   * Fetches the list of items provided by the selected supplier.
-   * - The selected supplier
-   */
   fetchItems(supplier: Supplier) {
     this.itemService.getAllItemsByIds(supplier.productsProvided).subscribe({
       next: (response) => {
@@ -134,9 +136,6 @@ export class OrdersComponent implements OnInit, AfterViewInit{
     this.dataSource.paginator = this.paginator;
   }
 
-  /**
-   * Handles the form submission.
-   */
   addOrder() {
     if (this.addOrderForm.invalid) {
       console.error('Form is invalid');
@@ -147,40 +146,60 @@ export class OrdersComponent implements OnInit, AfterViewInit{
     console.log('Order Data:', orderData);
     this.orderService.addOrder(orderData,this.user.userId,this.user.role).subscribe({
       next: (response) => {
-        this.addOrderForm.reset();
-      this.disableAddOrder = true;
-      this.getOrders();
+        if(response.statusEntry.statusCode===1003)
+        {
+          this.addOrderForm.reset();
+          this.disableAddOrder = true;
+          this.getOrders();
+          this.snackbar.showSnackbar("Order added succesfully");
+        }else{
+          this.snackbar.showSnackbar("Unable to place order")
+        }
+        
       },
       error: (error) => {
         console.error('Error adding supplier:', error);
+        this.snackbar.showSnackbar("Error placing order");
       },
     });
   }
 
   getOrders(){
-    this.orderService.getOrders().subscribe({
-      next: (response) => {
-        this.orders=response.data;
-        this.dataSource.data=this.orders;
-      },
-      error: (error) => {
-        console.error('Error getting orders:', error);
-      },
-    });
+    if(this.user.role==='admin')
+    {
+      this.orderService.getOrders().subscribe({
+        next: (response) => {
+          this.orders=response.data;
+          this.dataSource.data=this.orders;
+        },
+        error: (error) => {
+          console.error('Error getting orders:', error);
+        },
+      });
+    }else{
+      this.orderService.getOrdersByUser(this.user.userId).subscribe({
+        next: (response) => {
+          this.orders=response.data;
+          this.dataSource.data=this.orders;
+        },
+        error: (error) => {
+          console.error('Error getting orders:', error);
+        },
+      });
+    }
+    
   }
 
   fetchLocationNames() {
     if (this.item?.availableLocations?.length) {
       const locationIds = this.item.availableLocations;
-  
-      // Call getAllLocationByIds from LocationService to fetch location details
+
       this.locationService.getAllLocationsByIds(locationIds).subscribe({
         next: (response) => {
           if (response?.data) {
-            // Map the response to the desired format: [{ locId: locName }]
             this.availableLocations = response.data.map((location: any) => ({
-              locId: location.locId, // Ensure this matches the ID field in the location object
-              locName: location.name, // Ensure this matches the name field in the location object
+              locId: location.locId, 
+              locName: location.name, 
             }));
             console.log('Available locations:', this.availableLocations);
           } else {
@@ -192,9 +211,20 @@ export class OrdersComponent implements OnInit, AfterViewInit{
         },
       });
     } else {
-      // Clear availableLocations if no locations are associated
       this.availableLocations = [];
     }
+  }
+
+  filterByDateRange(): void {
+    let filteredOrders = this.orders;
+
+    if (this.startDate && this.endDate) {
+      filteredOrders = filteredOrders.filter((order) => {
+        const orderDate = new Date(order.orderDate);
+        return orderDate >= this.startDate && orderDate <= this.endDate;
+      });
+    }
+    this.dataSource.data = filteredOrders;
   }
   
 }

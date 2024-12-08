@@ -5,7 +5,8 @@ form {
   justify-content: center; // Center content vertically
   height: 100vh; // Full-screen height for vertical centering
   padding: 20px;
-  background-color: #f8f9fa; // Light background color
+  background-color: whitesmoke; // Light background color
+  padding-top: 10px;
 
   .field {
     width: 100%;
@@ -31,7 +32,7 @@ form {
 
       &:focus {
         outline: none;
-        border-color: #1976d2; // Blue border on focus
+        border-color: rgb(53,94,59); // Blue border on focus
         box-shadow: 0 0 4px rgba(25, 118, 210, 0.2); // Subtle focus shadow
       }
     }
@@ -47,17 +48,18 @@ form {
     width: 100%;
     max-width: 400px; // Match input field width
     padding: 12px 20px; // Button padding
-    background-color: #1976d2; // Primary blue color
+    background-color: rgb(53,94,59); // Primary blue color
     color: white; // White text color
     font-size: 16px;
     font-weight: bold;
     border: none; // Remove default border
     border-radius: 6px; // Rounded corners
-    cursor: pointer; // Pointer cursor
+    cursor: pointer; 
+    
     transition: background-color 0.3s ease, transform 0.2s ease;
 
     &:hover {
-      background-color: #1565c0; // Darker blue on hover
+      background-color: rgb(53,94,59,0.8); // Darker blue on hover
     }
 
     &:active {

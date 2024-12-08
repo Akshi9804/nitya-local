@@ -5,19 +5,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { EditItemDialogComponent } from '../edit-item-dialog/edit-item-dialog.component';
 import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
 import { ConfirmationDialogComponent } from '../common-elements/confirmation-dialog/confirmation-dialog.component';
 import { LocationService } from '../../services/location.service';
-import { Location } from '../../interfaces/location.interface';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { CustomDatePipe } from '../../pipes/custom-date.pipe';
 import { PricePipe } from '../../pipes/price.pipe';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-item',
   standalone: true,
-  imports: [MatIconModule,MatButtonModule,CommonModule,CustomDatePipe,PricePipe],
+  imports: [MatIconModule,CommonModule,CustomDatePipe,PricePipe],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss'
 })
@@ -26,19 +25,22 @@ export class ItemComponent implements OnInit{
   message:String;
   locations:string[];
   isAdmin:boolean;
+  isBarcode:boolean;
+  barcodeUrl:string;
 
   constructor(private dialog: MatDialog,private itemService:ItemService,
     private route:ActivatedRoute,private router : Router,
-  private locationService:LocationService,private authService: AuthService){}
+  private locationService:LocationService,private authService: AuthService,private snackbar:SnackbarService){}
 
   ngOnInit() {
    this.refreshItemData();
     this.isAdmin=this.authService.isUserAdmin();
+    this.isBarcode=false;
   }
 
   openEditItem(){
     const dialogRef = this.dialog.open(EditItemDialogComponent, {
-      width: '400px',
+      width: '600px',
       data: { item: this.item },
     });
 
@@ -95,6 +97,35 @@ export class ItemComponent implements OnInit{
         }
       });
     }
+  }
+
+  getBarcode(){
+    
+    const itemId = this.item?.itemId;
+  if (itemId) {
+    this.itemService.getBarcode(itemId).subscribe({
+      next: (response) => {
+        console.log(response.data);
+        const barcodes = Array.isArray(response.data) ? response.data[0] : response.data;
+        console.log(barcodes) 
+        if (barcodes.barcode) {
+          const barcodeUrl = barcodes.barcode; 
+          console.log('Barcode URL:', barcodeUrl);
+          this.isBarcode=true;
+          this.barcodeUrl=barcodeUrl;
+        } else {
+          console.error('No barcode data available');
+          this.snackbar.showSnackbar("Barcode is not available");
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching barcode:', error);
+        this.snackbar.showSnackbar("Error fetching barcore");
+      },
+    });
+  } else {
+    console.error('Item ID is missing');
+  }
   }
 
 }

@@ -1,6 +1,27 @@
 <div class="inventory_panel">
-  <button *ngIf="isAdmin" class="addItemButton" (clicl)="addItem()">Add New Item</button>
+  <button *ngIf="isAdmin" class="addItemButton" (click)="openAddItem()">Add New Item</button>
   <h1>Inventory</h1>
+
+  <div class="filters">
+    <!-- Category Filter -->
+    <mat-form-field appearance="fill">
+      <mat-label>Category</mat-label>
+      <mat-select [(value)]="selectedCategory" (selectionChange)="applyFilters()">
+        <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Quantity Filter -->
+    <mat-form-field appearance="fill">
+      <mat-label>Quantity</mat-label>
+      <mat-select [(value)]="selectedQuantity" (selectionChange)="applyFilters()">
+        <mat-option value="low">Low (< 100)</mat-option>
+        <mat-option value="medium">Medium (100 - 500)</mat-option>
+        <mat-option value="high">High (> 500)</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
   <div class="tabular-data">
     <table mat-table [dataSource]="dataSource">
       <!-- Item ID column -->

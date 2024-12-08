@@ -32,4 +32,9 @@ public class OrderController {
         else
             return new ResponseEntity<>(orderService.addOutgoingOrder(order,id),HttpStatus.OK);
     }
+
+    @GetMapping("/{userId}")
+    public CommonResponse<List<Order>> getOrdersByUserId(@PathVariable String userId) {
+        return orderService.getOrdersByUserId(userId);
+    }
 }

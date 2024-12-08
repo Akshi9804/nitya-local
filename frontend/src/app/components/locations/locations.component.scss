@@ -21,6 +21,9 @@
         padding: 30px;
         box-shadow: 1px 1px 5px 1px rgb(200, 200, 200);
         margin-top: 20px;
+        &:hover{
+            transform: scale(1.02);
+          }
         
     }
     .content{
@@ -38,7 +41,10 @@
         border-radius: 5px;
         color: white;
         font-weight: bold;
-        
+        &:hover{
+            transform: scale(1.02);
+            opacity: 0.85;
+          }
     }
 }
 

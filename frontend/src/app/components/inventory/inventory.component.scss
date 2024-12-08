@@ -12,6 +12,15 @@
     font-family: "Lato", serif;
     border: transparent;
     border-radius: 5px;
+    margin-top: 30px;
+    &:hover{
+      transform: scale(1.02);
+      opacity: 0.85;
+    }
+  }
+
+  .filters{
+    text-align: center;
   }
 
   .tabular-data {
@@ -90,26 +99,10 @@
   mat-paginator {
     margin-top: 20px;
     margin-left: -34vw;
-    /* Add spacing above the paginator */
-    // display: flex;
-    // justify-content: center;
 
-    // .mat-paginator-navigation {
-    //   button {
-    //     border-radius: 50%;
-    //     /* Circular buttons */
-    //     background-color: #f5f5f5;
-    //     color: #555;
-    //   }
-
-    //   button:hover {
-    //     background-color: #e0e0e0;
-    //     /* Subtle hover effect */
-    //   }
-    // }
   }
 
-  /* Header styling */
+
   h1 {
     text-align: center;
     font-size: 2rem;
@@ -118,7 +111,6 @@
     color: rgb(53,94,59);
     /* Matching blue header color */
     font-family: "Poppins", sans-serif;
-    margin-top: 30px;
   }
 
 }

@@ -8,7 +8,7 @@
       <h3><b>Address:</b> {{supplier?.address}}</h3>
       <h3><b>Delivery In Days:</b> {{supplier?.deliveryInDays}}</h3>
     </div>
-    <div>
+    <div *ngIf="isAdmin">
       <button class="delete-sup" (click)="openConfirmationDialogForDelete()">Delete</button>
     </div>
   
@@ -26,7 +26,7 @@
         <h2>{{item.name}}</h2>
         <p>Category: {{item.category}}</p>
       </div>
-      <div>
+      <div *ngIf="isAdmin">
         <button mat-icon-button (click)="openConfirmationDialogForDeleteItem(item.itemId)"><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon></button>
       </div>
     </div>

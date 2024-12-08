@@ -34,6 +34,10 @@
               box-shadow: 0 0 4px rgba(25, 118, 210, 0.2); // Subtle focus shadow
             }
           }
+
+          input{
+            width: 92%;
+          }
       
           .validation {
             margin-top: 8px; // Space between input and validation messages

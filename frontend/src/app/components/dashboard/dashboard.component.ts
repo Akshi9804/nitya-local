@@ -16,6 +16,7 @@ import { Notification } from '../../interfaces/notification.interface';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { LocationService } from '../../services/location.service';
 import { InsightService } from '../../services/insight.service';
 
 @Component({
@@ -28,12 +29,16 @@ import { InsightService } from '../../services/insight.service';
 export class DashboardComponent implements OnInit {
   user: User | null = null;
   items: Item[] = [];
+  locations: any[] = [];
   orders: Order[] = [];
   reviews: Review[] = [];
   barGraphData: any;
   notifications: Notification[] = [];
   displayedNotifications: Notification[] = [];
   showRead: boolean = false;
+  feedbackText: string = '';
+  feedbackStatus: string = '';
+  selectedLocation: string = '';
   analysisResponse = '';
   pleaseWaitText = 'Fetching your response, please wait!'
 
@@ -42,22 +47,25 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private userService: UserService,
     private itemService: ItemService,
     private orderService: OrderService,
     private snackbar: SnackbarService,
     private reviewService: ReviewService,
     private notificationService: NotificationService,
+    private locationService:LocationService,
     private insightService: InsightService
   ) { }
 
   ngOnInit(): void {
     this.user = this.authService.getUser();
-    this.getItems();
-    console.log(this.items);
-    this.getOrders();
-    this.getReviews();
+    if(this.user.role==='admin'){
+      this.getItems();
+      this.getOrders();
+      this.getReviews();
+    }
+   
     this.fetchNotifications();
+    this.fetchLocations();
 
     console.log(this.barGraphData);
   }
@@ -96,6 +104,56 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+
+  submitFeedback() {
+    if (this.selectedLocation.trim() && this.feedbackText.trim()) {
+      const review: Review = {
+        locName: this.selectedLocation, // Assuming locName is the location name; adjust if needed
+        review: this.feedbackText,
+      };
+  
+      // Call the addReview function to send the review
+      this.reviewService.postReview(review).subscribe({
+        next: (response) => {
+          console.log('Feedback submitted successfully:', response);
+          this.feedbackStatus = 'Thank you for your feedback!';
+          this.feedbackText = '';
+          this.selectedLocation = '';
+        },
+        error: (error) => {
+          console.error('Error submitting feedback:', error);
+          this.feedbackStatus = 'Failed to submit feedback. Please try again.';
+        },
+      });
+    } else {
+      this.feedbackStatus = 'Please select a location and write feedback before submitting.';
+    }
+
+    // Clear the status message after 3 seconds
+    setTimeout(() => {
+      this.feedbackStatus = '';
+    }, 3000);
+      
+    }
+
+  
+
+    fetchLocations() {
+      this.locationService.getAllLocations().subscribe({
+        next: (res) => {
+          this.locations = res.data.map((item: any) => ({
+            locId: item.locId, // Adjust the mapping based on the API response
+            name: item.name,
+            address: item.address,
+            stockDetails: item.stockDetails,
+          }));
+          console.log(this.locations);
+        },
+        error: (error) => {
+          console.error('Error fetching locations:', error);
+        },
+      });
+    }
 
   getCategoriesWithCounts(): { [key: string]: number } {
     const categoryCounts: { [key: string]: number } = {};

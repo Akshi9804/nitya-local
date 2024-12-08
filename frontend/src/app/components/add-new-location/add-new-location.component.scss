@@ -1,112 +1,78 @@
-// General container for the form
 .dialog-content {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  padding: 20px; /* Add padding to the dialog content */
+  max-height: calc(100vh - 150px); /* Ensure it fits within the viewport */
+  overflow: hidden; /* Disable scrollbars */
+}
+
+.mat-mdc-dialog-title{
+  color: rgb(53,94,59);
+  padding-left: 15px;
+  font-weight: bold;
+}
+
+.field {
+  margin-bottom: 15px;
+
+  label {
+    font-weight: bold; 
+    margin-bottom: 5px;
+    display: inline-block;
   }
-  
-  // Style for the form fields
-  .field {
-    margin-bottom: 15px;
-  
-    label {
-      font-size: 16px;
-      font-weight: bold;
-      color: #333;
-      display: block;
-      margin-bottom: 5px;
-      transition: color 0.3s ease;
-    }
-  
-    input {
-      width: 100%;
-      padding: 10px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-      transition: border-color 0.3s ease;
-  
-      &:focus {
-        outline: none;
-        border-color: #007bff;
-      }
-  
-      &.ng-touched.ng-dirty.ng-invalid {
-        border-color: #e74c3c; // Highlight in red on invalid input
-      }
-    }
-  
-    .validation {
-      margin-top: 5px;
-      color: #e74c3c;
-      font-size: 12px;
-      display: block;
-    }
-  
-    // Highlight the label when input is invalid
-    input.ng-touched.ng-dirty.ng-invalid ~ label {
-      color: #e74c3c;
-    }
-  }
-  
-  // Button styles
-  .submit-btn, .cancel-btn {
+
+  input {
     width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .validation {
+    color: #d32f2f; /* Error messages in red */
+    font-size: 12px;
+    margin-top: 5px;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+  .cancel-btn {
+    background-color: rgb(232, 232, 232); /* Red color for cancel */
+    color: rgb(53,94,59);
+    padding: 10px 20px;
     border: none;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
     &:hover {
-      transform: scale(1.05);
-    }
-  
-    &.submit-btn {
-      background-color: #007bff;
-      color: white;
-  
-      &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-      }
-  
-      &:not(:disabled):hover {
-        background-color: #0056b3;
-      }
-    }
-  
-    &.cancel-btn {
-      background-color: #f44336;
-      color: white;
-  
-      &:hover {
-        background-color: #d32f2f;
-      }
+      background-color: rgba(54, 94, 59, 0.34); /* Darker red on hover */
     }
   }
-  
-  // Ensure dialog actions are aligned correctly
-  .mat-dialog-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  
-  // Add some spacing for the whole dialog
-  mat-dialog-content {
-    padding: 20px;
-  }
-  
-  .mat-mdc-dialog-container .mdc-dialog__title {
-    background-color: #007bff;
+
+  .submit-btn {
+    background-color: rgb(53,94,59); /* Green color for submit */
     color: white;
-    padding: 15px;
-    font-size: 18px;
-    text-align: center;
+    padding: 10px 20px;
+    border: none;
+    font-weight: bold;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: rgb(53,94,59,0.85); 
+    }
+
+    &:disabled {
+      background-color: rgb(125, 152, 129); 
+      cursor: not-allowed;
+    }
   }
-  
+}
